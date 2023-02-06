@@ -1,0 +1,41 @@
+{
+  "name": "@botfi/nextjs.repo-template.botfi.localhost",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../.devcontainer/docker-compose.nextjs.yml"
+  ],
+  "service": "nextjs",
+  "runServices": ["nextjs"],
+  "workspaceFolder": "/workspace/nextjs",
+  "shutdownAction": "stopCompose",
+  "extensions": [
+    "esbenp.prettier-vscode",
+    "joelday.docthis",
+    "MS-vsliveshare.vsliveshare",
+    "Prisma.prisma"
+  ],
+  "settings": {
+    "editor.autoIndent": "advanced",
+    "editor.links": true,
+    "editor.rulers": [80, 120],
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": false,
+    "prettier.semi": false,
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "es5",
+    "prettier.printWidth": 80,
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[prisma]": {
+      "editor.defaultFormatter": "Prisma.prisma"
+    }
+  }
+}

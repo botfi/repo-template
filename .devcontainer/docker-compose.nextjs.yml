@@ -1,0 +1,31 @@
+version: "3.8"
+
+x-base: &base
+  tty: true
+  env_file: .env.local
+  networks:
+    botfi.localhost: {}
+  volumes:
+    - .devcontainer/.yarnrc:/root/.yarnrc:ro
+    - .:/workspace
+x-node: &node
+  <<: *base
+  build:
+    context: .
+    dockerfile: .devcontainer/Dockerfile.node16
+
+services:
+  nextjs:
+    <<: *node
+    container_name: nextjs.repo-template.botfi.localhost
+    hostname: nextjs.repo-template.botfi.localhost
+    networks:
+      botfi.localhost: {}
+    working_dir: /workspace/nextjs
+    env_file: nextjs/.env.local
+    volumes:
+      - nextjs-vscode-server:/root/.vscode-server
+      - .devcontainer/.yarnrc:/root/.yarnrc:ro
+      - .:/workspace
+volumes:
+  nextjs-vscode-server: {}
