@@ -1,8 +1,8 @@
 {
   "name": "@botfi/nextjs.repo-template.botfi.localhost",
   "dockerComposeFile": [
-    "../docker-compose.yml",
-    "../.devcontainer/docker-compose.nextjs.yml"
+    "../compose.yml",
+    "../.devcontainer/compose.nextjs.yml"
   ],
   "service": "nextjs",
   "runServices": ["nextjs"],
