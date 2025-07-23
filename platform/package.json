@@ -1,0 +1,41 @@
+{
+  "repository": "https://github.com/botfi/repo-template.git",
+  "name": "@botfi/repo-template",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "refresh": "rm -rf ./{apps,services,packages}/*/node_modules node_modules && pnpm store prune && pnpm install"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "jsonpath": "workspace:*"
+    },
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "@vercel/speed-insights",
+      "prisma",
+      "sharp"
+    ],
+    "ignoredBuiltDependencies": [
+      "@apollo/protobufjs",
+      "@apollo/rover",
+      "@sentry/cli",
+      "core-js",
+      "core-js-pure",
+      "esbuild"
+    ]
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "pnpm@10.13.1"
+}
