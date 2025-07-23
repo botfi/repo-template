@@ -1,0 +1,5 @@
+build
+dist
+__generated__
+.expo
+node_modules

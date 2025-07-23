@@ -1,0 +1,8 @@
+bracketSpacing: true
+trailingComma: all
+singleQuote: true
+semi: false
+printWidth: 120
+plugins:
+  - prettier-plugin-organize-imports
+  - prettier-plugin-tailwindcss
