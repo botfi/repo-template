@@ -1,5 +1,5 @@
 import { UserConfig } from 'i18next-parser'
-import { defaultNS, languages } from '../i18n/settings'
+import { defaultNS, languages } from '../i18n'
 
 const config: UserConfig = {
   locales: Array.from(languages),

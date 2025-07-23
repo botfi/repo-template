@@ -1,10 +1,10 @@
 import { env } from '@botfi/env/main'
 import { Button } from '@botfi/ui/lib/button'
 
-import { serverTranslation } from '@/i18n/server'
+import { getTranslation } from '@/i18n/server'
 
 export default async function Page() {
-  const { t } = await serverTranslation()
+  const { t } = await getTranslation()
   return (
     <div className="flex min-h-svh items-center justify-center">
       <div className="flex flex-col items-center justify-center gap-4">

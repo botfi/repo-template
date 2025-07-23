@@ -1,53 +1,12 @@
 'use client'
 
-import i18next from 'i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
-import resourcesToBackend from 'i18next-resources-to-backend'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { initReactI18next, useTranslation as useTranslationReactI18next } from 'react-i18next'
-import { showTranslations } from 'translation-check'
+import { useTranslation as useTranslationReactI18next } from 'react-i18next'
 import { z } from 'zod'
 
-import { BASE_PATH, LANG_COOKIE_NAME } from '@/lib/constant'
-import { fallbackLng, getOptions, languages } from './settings'
-
-const runsOnServerSide = typeof window === 'undefined'
-const pathname = runsOnServerSide ? '' : window.location.pathname
-
-const languageDetector = new LanguageDetector()
-
-i18next
-  .use(initReactI18next)
-  .use(languageDetector)
-  .use(resourcesToBackend((language: string, namespace: string) => import(`./locales/${language}/${namespace}.json`)))
-  .init(
-    {
-      ...getOptions(),
-      lng: undefined, // detect the language on client side
-      detection: {
-        order: ['path', 'htmlTag', 'cookie', 'navigator'],
-        lookupCookie: LANG_COOKIE_NAME,
-        caches: ['localStorage', 'cookie'],
-      },
-      // Important on server-side to assert translations are loaded before rendering views.
-      // Important to ensure that both languages are available for the / path simultaneously
-      preload: runsOnServerSide || pathname === BASE_PATH ? languages : [],
-      debug: process.env.NODE_ENV === 'development' && !runsOnServerSide,
-    },
-    (err, _t) => {
-      if (err) {
-        console.error(err)
-      }
-      if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('showTranslations')) {
-        showTranslations(i18next, {
-          sourceLng: 'en',
-          targetLngs: ['ja'],
-          preserveEmptyStrings: false,
-        })
-      }
-    },
-  )
+import i18next, { runsOnServerSide } from './i18next'
+import { fallbackLng } from './settings'
 
 export function useTranslation(ns?: string | string[], options?: Record<string, unknown>) {
   // The page /foo matches /<previous-lang>/foo since it was rewritten in middleware. We trust it.

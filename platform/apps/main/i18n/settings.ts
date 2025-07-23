@@ -14,3 +14,6 @@ export function getOptions(lang: Language = fallbackLng, ns: string | string[] =
     ns,
   }
 }
+
+export const headerName = 'x-i18next-current-lang'
+export { LANG_COOKIE_NAME as cookieName } from '@/lib/constant'
