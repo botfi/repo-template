@@ -13,17 +13,17 @@ x-node: &node
     dockerfile: .devcontainer/Dockerfile.node22
 
 services:
-  nextjs:
+  platform:
     <<: *node
-    container_name: nextjs.repo-template.botfi.localhost
-    hostname: nextjs.repo-template.botfi.localhost
+    container_name: repo-template.botfi.localhost
+    hostname: repo-template.botfi.localhost
     networks:
       botfi.localhost: {}
-    working_dir: /workspace/nextjs
-    env_file: nextjs/.env.local
+    working_dir: /workspace/platform
+    env_file: platform/.env.local
     volumes:
-      - nextjs-vscode-server:/root/.vscode-server
+      - platform-vscode-server:/root/.vscode-server
       - .devcontainer/.yarnrc:/root/.yarnrc:ro
       - .:/workspace
 volumes:
-  nextjs-vscode-server: {}
+  platform-vscode-server: {}
