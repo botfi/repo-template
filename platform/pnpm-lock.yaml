@@ -11,9 +11,9 @@ importers:
       '@botfi/eslint-config':
         specifier: workspace:*
         version: link:packages/eslint-config
-      '@botfi/typescript-config':
+      '@botfi/tsconfig':
         specifier: workspace:*
-        version: link:packages/typescript-config
+        version: link:packages/tsconfig
       eslint:
         specifier: 9.31.0
         version: 9.31.0(jiti@2.4.2)
@@ -51,9 +51,9 @@ importers:
       '@botfi/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@botfi/typescript-config':
+      '@botfi/tsconfig':
         specifier: workspace:*
-        version: link:../../packages/typescript-config
+        version: link:../../packages/tsconfig
       '@types/node':
         specifier: ^22
         version: 22.16.5
@@ -109,7 +109,7 @@ importers:
         specifier: ^8.24.1
         version: 8.38.0(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3)
 
-  packages/typescript-config: {}
+  packages/tsconfig: {}
 
   packages/ui:
     dependencies:
@@ -165,9 +165,9 @@ importers:
       '@botfi/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@botfi/typescript-config':
+      '@botfi/tsconfig':
         specifier: workspace:*
-        version: link:../typescript-config
+        version: link:../tsconfig
       '@tailwindcss/postcss':
         specifier: ^4.0.8
         version: 4.1.11

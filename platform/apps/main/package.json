@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@botfi/eslint-config": "workspace:*",
-    "@botfi/typescript-config": "workspace:*",
+    "@botfi/tsconfig": "workspace:*",
     "@types/node": "^22",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",

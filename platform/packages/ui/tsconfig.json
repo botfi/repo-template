@@ -1,5 +1,5 @@
 {
-  "extends": "@botfi/typescript-config/react-library.json",
+  "extends": "@botfi/tsconfig/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
