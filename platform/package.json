@@ -9,9 +9,18 @@
     "packages/*"
   ],
   "scripts": {
-    "refresh": "rm -rf ./{apps,services,packages}/*/node_modules node_modules && pnpm store prune && pnpm install"
+    "refresh": "rm -rf ./{apps,services,packages}/*/node_modules node_modules && pnpm store prune && pnpm install",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "format:write": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@botfi/eslint-config": "workspace:*",
+    "@botfi/typescript-config": "workspace:*",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5",
     "typescript": "5.8.3"
   },
   "pnpm": {

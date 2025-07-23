@@ -1,0 +1,4 @@
+{
+  "extends": "@botfi/typescript-config/base.json"
+}
+
