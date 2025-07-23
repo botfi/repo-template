@@ -51,6 +51,7 @@
   "devDependencies": {
     "@botfi/tsconfig": "workspace:*",
     "@faker-js/faker": "9.9.0",
+    "@pothos/plugin-prisma": "4.10.0",
     "@types/node": "^22",
     "prisma": "6.12.0",
     "tsx": "4.20.3",

@@ -8,6 +8,11 @@ generator client {
   // output          = "./client"
 }
 
+generator pothos {
+  provider     = "prisma-pothos-types"
+  output       = "../src/graphql/index.ts"
+}
+
 generator zod {
   provider                 = "zod-prisma-types"
   output                   = "../src/models" // default is ./generated/zod
