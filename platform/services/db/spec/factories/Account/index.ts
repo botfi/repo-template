@@ -1,5 +1,5 @@
-import { faker } from '@faker-js/faker'
 import { Account, prisma } from '@botfi/db'
+import { faker } from '@faker-js/faker'
 
 import { build as buildUser } from '@botfi/db/factories/User'
 
@@ -21,11 +21,13 @@ export const build = (attrs: Partial<Account> = {}): Account => {
 }
 
 export const create = async (attrs: Partial<Account> = {}): Promise<Account> => {
-  const { userId, ...data } = attributes(attrs)
+  const { id, ...restAttrs } = attrs
+  const { userId, ...data } = attributes(restAttrs)
 
   return await prisma.account.create({
     data: {
       ...data,
+      id,
       user: {
         connectOrCreate: {
           where: { id: userId },

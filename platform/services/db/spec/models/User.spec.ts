@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterAll } from 'vitest'
 import { prisma } from '@botfi/db'
+import { afterAll, beforeEach, describe, expect, it } from 'vitest'
 
 import * as UserFactory from '../factories/User'
 
