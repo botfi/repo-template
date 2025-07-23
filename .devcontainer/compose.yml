@@ -25,5 +25,7 @@ services:
       - platform-vscode-server:/root/.vscode-server
       - .devcontainer/.yarnrc:/root/.yarnrc:ro
       - .:/workspace
+    ports:
+      - 15000:15000 # main-app
 volumes:
   platform-vscode-server: {}
