@@ -1,0 +1,63 @@
+{
+  "name": "@botfi/db",
+  "description": "Single database for all services",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "db:studio": "prisma studio --browser none",
+    "db:generate": "prisma generate",
+    "postdb:generate": "pnpm format:write",
+    "db:deploy": "prisma migrate deploy",
+    "db:migrate": "prisma migrate dev --skip-seed",
+    "postdb:migrate": "pnpm format:write",
+    "db:recreate": "prisma migrate reset --force --skip-seed --skip-generate",
+    "db:reset": "pnpm db:recreate && pnpm db:seed",
+    "db:seed": "tsx ./seeds/development.ts",
+    "typecheck": "tsc --noEmit",
+    "format:write": "prettier --write \"{src,seeds,spec}/**/*.{ts,tsx,mdx}\" --cache",
+    "format:check": "prettier --check \"{src,seeds,spec}/**/*.{ts,tsx,mdx}\" --cache",
+    "test:unit": "vitest --config=config/unit.config.ts",
+    "test:it": "vitest --config=config/it.config.ts"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": [
+      "./src/*/index.ts"
+    ],
+    "./factories/*": "./spec/factories/*/index.ts"
+  },
+  "files": [
+    "src",
+    "spec/factories"
+  ],
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*/index",
+        "src/*",
+        "spec/factories/*/index"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "zod": "^4.0.5"
+  },
+  "dependencies": {
+    "@botfi/env": "workspace:*",
+    "@prisma/client": "6.12.0"
+  },
+  "devDependencies": {
+    "@botfi/tsconfig": "workspace:*",
+    "@faker-js/faker": "9.9.0",
+    "@types/node": "^22",
+    "prisma": "6.12.0",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "3.2.4",
+    "zod": "4.0.5",
+    "zod-prisma-types": "3.2.4"
+  }
+}
