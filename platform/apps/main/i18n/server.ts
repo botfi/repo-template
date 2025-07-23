@@ -1,26 +1,30 @@
 'server only'
 
 import { type i18n, type TFunction } from 'i18next'
-import { cookies } from 'next/headers'
+import { headers } from 'next/headers'
 
 import i18next from './i18next'
-import { cookieName, fallbackLng, Language, languages } from './settings'
+import { fallbackLng, headerName } from './settings'
 
 export async function getTranslation(
   ns?: string | string[],
   options?: { keyPrefix?: string; lang?: string },
 ): Promise<{ t: TFunction; i18n: i18n }> {
-  const cookieLang = (await cookies()).get(cookieName)?.value
+  const headerList = await headers()
+  const lang = headerList.get(headerName)
 
-  let i18nLang: Language = (options?.lang || cookieLang || fallbackLng) as Language
-
-  if (!languages.includes(i18nLang as Language)) {
-    console.warn(`Invalid language: ${i18nLang}, fallback to ${fallbackLng}`)
-    i18nLang = fallbackLng
+  if (lang && i18next.resolvedLanguage !== lang) {
+    await i18next.changeLanguage(lang)
   }
-
+  if (ns && !i18next.hasLoadedNamespace(ns)) {
+    await i18next.loadNamespaces(ns)
+  }
   return {
-    t: i18next.getFixedT(i18nLang, ns, options?.keyPrefix),
+    t: i18next.getFixedT(
+      lang ?? i18next.resolvedLanguage ?? fallbackLng,
+      Array.isArray(ns) ? ns[0] : ns,
+      options?.keyPrefix,
+    ),
     i18n: i18next,
   }
 }

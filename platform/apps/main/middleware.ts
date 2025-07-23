@@ -1,36 +1,43 @@
+import acceptLanguage from 'accept-language'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { defaultNS as defaultLocale, Language, languages as locales } from './i18n/settings'
-import { LANG_COOKIE_NAME } from './lib/constant'
+import { cookieName, fallbackLng, headerName, languages as locales } from './i18n/settings'
 
-export default async function middleware(request: NextRequest) {
-  const cookieStore = await cookies()
-  let lang: Language | undefined = cookieStore.get(LANG_COOKIE_NAME)?.value as Language | undefined
-  if (lang && !locales.includes(lang)) {
-    lang = undefined
-  }
-  const { pathname } = request.nextUrl
-  const pathnameLocale: Language | undefined = pathname.split('/')[1] as Language | undefined
-  const pathnameHasLocale = typeof pathnameLocale === 'string' && locales.includes(pathnameLocale)
+acceptLanguage.languages(locales as unknown as string[])
 
-  if (!lang && pathnameHasLocale) {
-    cookieStore.set(LANG_COOKIE_NAME, pathnameLocale)
+export default async function middleware(req: NextRequest) {
+  if (req.nextUrl.pathname.indexOf('icon') > -1 || req.nextUrl.pathname.indexOf('chrome') > -1) {
     return NextResponse.next()
-  } else if (lang && !pathnameHasLocale) {
-    request.nextUrl.pathname = `/${lang}${pathname}`
-    return NextResponse.rewrite(request.nextUrl)
-  } else if (!lang && !pathnameHasLocale) {
-    cookieStore.set(LANG_COOKIE_NAME, defaultLocale)
-
-    request.nextUrl.pathname = `/${defaultLocale}${pathname}`
-    return NextResponse.rewrite(request.nextUrl)
-  } else if (lang && pathnameHasLocale && pathnameLocale !== lang) {
-    cookieStore.set(LANG_COOKIE_NAME, pathnameLocale)
   }
-  return NextResponse.next()
+
+  const cookieStore = await cookies()
+  let lang
+
+  if (req.cookies.has(cookieName)) lang = acceptLanguage.get(cookieStore.get(cookieName)?.value)
+  if (!lang) lang = acceptLanguage.get(req.headers.get('Accept-Language'))
+  if (!lang) lang = fallbackLng
+
+  const langInPath = locales.find((l) => req.nextUrl.pathname.startsWith(`/${l}`))
+  const headers = new Headers(req.headers)
+  headers.set(headerName, langInPath || lang)
+
+  // Rewrite if lang is not in path to maintain the behavior /foo matches /<previous-lang>/foo
+  if (!langInPath && !req.nextUrl.pathname.startsWith('/_next')) {
+    return NextResponse.rewrite(new URL(`/${lang}${req.nextUrl.pathname}${req.nextUrl.search}`, req.url))
+  }
+
+  if (headers.has('referer')) {
+    const refererUrl = new URL(headers.get('referer')!)
+    const langInReferer = locales.find((l) => refererUrl.pathname.startsWith(`/${l}`))
+    const response = NextResponse.next({ headers })
+    if (langInReferer) response.cookies.set(cookieName, langInReferer)
+    return response
+  }
+
+  return NextResponse.next({ headers })
 }
 
 export const config = {
-  matcher: ['/((?!api|static|.*\\..*|_next).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)'],
 }
