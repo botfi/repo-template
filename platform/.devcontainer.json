@@ -56,6 +56,7 @@
           "**/.turbo/**/*": true,
           "**/dist/**/*": true,
           "**/tmp": true,
+          "**/*.swp": true,
           "**/storybook-static": true,
           "**/.vercel": true,
           "**/.apps": true,
