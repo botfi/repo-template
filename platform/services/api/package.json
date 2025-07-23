@@ -1,0 +1,74 @@
+{
+  "name": "@botfi/api",
+  "description": "API for the MAIN",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsx config/printSchema.ts",
+    "typecheck": "tsc --noEmit",
+    "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
+    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
+    "test:unit": "vitest --config=config/unit.config.ts",
+    "test:it": "vitest --config=config/it.config.ts"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": [
+      "./src/*.ts",
+      "./src/*.tsx",
+      "./src/*/index.ts"
+    ]
+  },
+  "files": [
+    "src",
+    "!src/**/*.test.ts",
+    "!src/**/*.spec.ts",
+    "src/**/*.graphql"
+  ],
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*",
+        "src/*/index"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "zod": "4.0.5"
+  },
+  "dependencies": {
+    "@apollo/gateway": "2.11.2",
+    "@apollo/server": "5.0.0",
+    "@apollo/subgraph": "2.11.2",
+    "@as-integrations/next": "4.0.0",
+    "@botfi/db": "workspace:*",
+    "@botfi/env": "workspace:*",
+    "@graphql-tools/federation": "3.2.6",
+    "@pothos/core": "4.8.0",
+    "@pothos/plugin-directives": "4.2.4",
+    "@pothos/plugin-federation": "4.4.2",
+    "@pothos/plugin-prisma": "4.10.0",
+    "@pothos/plugin-relay": "4.6.2",
+    "@pothos/plugin-scope-auth": "4.1.5",
+    "@pothos/plugin-zod": "4.2.2",
+    "graphql": "16.11.0",
+    "graphql-scalars": "1.24.2",
+    "graphql-tag": "2.12.6",
+    "graphql-yoga": "5.15.1"
+  },
+  "devDependencies": {
+    "@botfi/tsconfig": "workspace:*",
+    "@types/node": "~22",
+    "@types/react": "~19",
+    "@types/react-dom": "~19",
+    "next": "15.4.3",
+    "react": "~19",
+    "react-dom": "~19",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "vitest": "3.2.4",
+    "zod": "4.0.5"
+  }
+}

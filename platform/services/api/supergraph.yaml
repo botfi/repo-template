@@ -1,0 +1,6 @@
+federation_version: =2.9.0
+subgraphs:
+  'GRAPH_MAIN':
+    routing_url: ${env.SUBGRAPH_ENDPOINT__GRAPH_MAIN}
+    schema:
+      file: ./graph.graphql
