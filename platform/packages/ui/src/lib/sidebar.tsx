@@ -12,7 +12,7 @@ import { Separator } from '@botfi/ui/lib/separator'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@botfi/ui/lib/sheet'
 import { Skeleton } from '@botfi/ui/lib/skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@botfi/ui/lib/tooltip'
-import { cn } from '@botfi/ui/lib/utils'
+import { cn } from '@botfi/ui/utils'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

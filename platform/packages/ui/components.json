@@ -12,7 +12,7 @@
   "iconLibrary": "lucide",
   "aliases": {
     "components": "@botfi/ui/components",
-    "utils": "@botfi/ui/lib/utils",
+    "utils": "@botfi/ui/utils",
     "hooks": "@botfi/ui/hooks",
     "lib": "@botfi/ui/lib",
     "ui": "@botfi/ui/lib"
