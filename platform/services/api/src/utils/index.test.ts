@@ -7,7 +7,7 @@ import {
   X_BOTFI_GRAPHQL_CLIENT_VERSION,
   X_BOTFI_INTERNAL_API_KEY,
   X_BOTFI_PREFIX,
-} from './utils'
+} from './index'
 
 // Mock the env module
 vi.mock('@botfi/env/main', () => ({

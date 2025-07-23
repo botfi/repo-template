@@ -15,11 +15,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./*": [
-      "./src/*.ts",
-      "./src/*.tsx",
-      "./src/*/index.ts"
-    ]
+    "./*": "./src/*/index.ts"
   },
   "files": [
     "src",

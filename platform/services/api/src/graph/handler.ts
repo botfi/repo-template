@@ -18,27 +18,29 @@ const server = new ApolloServer<Context>({
   introspection: true,
 })
 
+let handler: (req: NextRequest) => Promise<Response>
+
 export const createHandler = (sub: string): ((req: NextRequest) => Promise<Response>) => {
-  const handler: (req: NextRequest) => Promise<Response> = startServerAndCreateNextHandler<NextRequest, Context>(
-    server,
-    {
-      context: async () => {
-        const zHeaders: Record<string, string> = {}
-        const existingHeaders = await headers()
-        existingHeaders.forEach((value, key) => {
-          if (key.toLowerCase().startsWith(X_BOTFI_PREFIX)) {
-            zHeaders[key] = value
-          }
-        })
-        return {
-          // Adding this will prevent any issues if you server implementation
-          // copies or extends the context object before passing it to your resolvers
-          ...initContextCache(),
-          sub,
-          headers: zHeaders,
+  if (handler) return handler
+
+  handler = startServerAndCreateNextHandler<NextRequest, Context>(server, {
+    context: async () => {
+      const zHeaders: Record<string, string> = {}
+      const existingHeaders = await headers()
+      existingHeaders.forEach((value, key) => {
+        if (key.toLowerCase().startsWith(X_BOTFI_PREFIX)) {
+          zHeaders[key] = value
         }
-      },
+      })
+      return {
+        // Adding this will prevent any issues if you server implementation
+        // copies or extends the context object before passing it to your resolvers
+        ...initContextCache(),
+        sub,
+        headers: zHeaders,
+      }
     },
-  )
+  })
+
   return handler
 }
