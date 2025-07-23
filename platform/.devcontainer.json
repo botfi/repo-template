@@ -2,7 +2,7 @@
   "name": "@botfi/repo-template.botfi.localhost",
   "dockerComposeFile": ["../compose.yml", "../.devcontainer/compose.yml"],
   "service": "platform",
-  "runServices": ["platform"],
+  "runServices": ["platform", "pgsql"],
   "workspaceFolder": "/workspace/platform",
   "shutdownAction": "stopCompose",
   "customizations": {
