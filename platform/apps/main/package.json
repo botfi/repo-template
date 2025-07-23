@@ -7,13 +7,14 @@
     "build": "next build",
     "build:clean": "rm -rf .next && pnpm build",
     "start": "next start -p ${DEV_MAIN_PORT:-15000}",
-    "lint": "next lint",
+    "lint": "next lint && pnpm typecheck && pnpm format:check",
     "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "format:write": "prettier --write \"**/*.{ts,tsx,md}\"",
     "typecheck": "tsc --noEmit",
     "i18n:parse": "i18next --config config/i18next-parser.ts"
   },
   "dependencies": {
+    "@botfi/env": "workspace:*",
     "@botfi/ui": "workspace:*",
     "i18next": "25.3.2",
     "i18next-browser-languagedetector": "8.2.0",

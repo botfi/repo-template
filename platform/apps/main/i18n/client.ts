@@ -4,13 +4,13 @@ import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import resourcesToBackend from 'i18next-resources-to-backend'
 import { useParams } from 'next/navigation'
-import { useEffect } from 'react'
-import { initReactI18next, useTranslation as reactUseTranslation } from 'react-i18next'
+import { useEffect, useState } from 'react'
+import { initReactI18next, useTranslation as useTranslationReactI18next } from 'react-i18next'
 import { showTranslations } from 'translation-check'
 import { z } from 'zod'
 
 import { BASE_PATH, LANG_COOKIE_NAME } from '@/lib/constant'
-import { getOptions, languages } from './settings'
+import { fallbackLng, getOptions, languages } from './settings'
 
 const runsOnServerSide = typeof window === 'undefined'
 const pathname = runsOnServerSide ? '' : window.location.pathname
@@ -26,9 +26,8 @@ i18next
       ...getOptions(),
       lng: undefined, // detect the language on client side
       detection: {
-        order: ['path', 'cookie', 'localStorage'],
+        order: ['path', 'htmlTag', 'cookie', 'navigator'],
         lookupCookie: LANG_COOKIE_NAME,
-        lookupLocalStorage: 'i18nextLng',
         caches: ['localStorage', 'cookie'],
       },
       // Important on server-side to assert translations are loaded before rendering views.
@@ -51,27 +50,25 @@ i18next
   )
 
 export function useTranslation(ns?: string | string[], options?: Record<string, unknown>) {
-  const clientHook = reactUseTranslation(ns, options)
-  const {
-    i18n: { language },
-  } = clientHook
-  const locale = (useParams()?.locale as string) ?? null
+  // The page /foo matches /<previous-lang>/foo since it was rewritten in middleware. We trust it.
+  const lang = (useParams()?.lang as string) ?? fallbackLng
+  if (typeof lang !== 'string') throw new Error('useTranslation is only available inside /app/[lang]')
 
-  // If we're rendering on the client and the language is different from the resolved language,
-  // change the language to match the locale in url
-  useEffect(() => {
-    if (language !== locale && locale !== null) {
-      clientHook.i18n.changeLanguage(locale)
-    }
-  })
-
-  // If we're rendering on the server and the language is different from the resolved language,
-  // This prevents hydration mismatches
-  if (runsOnServerSide && language !== locale && locale !== null) {
-    clientHook.i18n.changeLanguage(locale)
+  if (runsOnServerSide && i18next.resolvedLanguage !== lang) {
+    i18next.changeLanguage(lang)
+  } else {
+    const [activeLng, setActiveLng] = useState(i18next.resolvedLanguage)
+    useEffect(() => {
+      if (activeLng === i18next.resolvedLanguage) return
+      setActiveLng(i18next.resolvedLanguage)
+    }, [activeLng, i18next.resolvedLanguage])
+    useEffect(() => {
+      if (!lang || i18next.resolvedLanguage === lang) return
+      i18next.changeLanguage(lang)
+    }, [lang, i18next])
   }
 
-  return clientHook
+  return useTranslationReactI18next(ns, options)
 }
 
 type UseZodResolverErrorMapFn = (issue: z.ZodIssue, ctx: { defaultError: string }) => { message: string }

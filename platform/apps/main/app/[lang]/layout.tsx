@@ -1,6 +1,7 @@
 import '@botfi/ui/globals.css'
 
 import { UIProvider } from '@botfi/ui/components/providers/UIProvider'
+import { dir } from 'i18next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 import type { Language } from '@/i18n/settings'
@@ -25,7 +26,7 @@ export default async function RootLayout({
   const lang = (await params).lang
 
   return (
-    <html lang={lang} suppressHydrationWarning>
+    <html lang={lang} dir={dir(lang)} suppressHydrationWarning>
       <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}>
         <UIProvider>{children}</UIProvider>
       </body>
