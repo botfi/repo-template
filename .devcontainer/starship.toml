@@ -13,7 +13,6 @@ format = "$symbol "
 [hostname]
 ssh_only = false
 format = "[$hostname](bold blue)"
-trim_at = ".botfi.io"
 
 [container]
 symbol = "🐳"

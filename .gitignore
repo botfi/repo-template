@@ -4,6 +4,9 @@
 .env.test.local
 .env.production.local
 
+# VSCode config
+*/.vscode/settings.json
+
 # misc
 .DS_Store
 *.pem
