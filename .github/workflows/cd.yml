@@ -50,19 +50,19 @@ jobs:
     with:
       app: main
       environment: production
-      url: "https://main-repo-template.botfi.io"
+      url: "https://repo-template.vercel.app"
     secrets:
-      VERCEL_ORG_ID: CHANGE-ME
-      VERCEL_PROJECT_ID: CHANGE-ME
-      VERCEL_TOKEN: CHANGE-ME
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID_MAIN_PROD }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
   main-staging:
     if: ${{ inputs.environment == 'staging' && (inputs.app == 'main' || inputs.app == '*') }}
     uses: './.github/workflows/_cd_apps.yml'
     with:
       app: main
       environment: staging
-      url: "https://main-repo-template.botfi.dev"
+      url: "https://repo-template-stg.vercel.app"
     secrets:
-      VERCEL_ORG_ID: CHANGE-ME
-      VERCEL_PROJECT_ID: CHANGE-ME
-      VERCEL_TOKEN: CHANGE-ME
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID_MAIN_STG }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
