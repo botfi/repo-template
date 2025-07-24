@@ -37,4 +37,12 @@ export function ApolloWrapper({ children }: React.PropsWithChildren) {
   return <ApolloNextAppProvider makeClient={makeClient}>{children}</ApolloNextAppProvider>
 }
 
-export { useBackgroundQuery, useFragment, useMutation, useQuery, useReadQuery, useSuspenseQuery } from '@apollo/client'
+export {
+  gql,
+  useBackgroundQuery,
+  useFragment,
+  useMutation,
+  useQuery,
+  useReadQuery,
+  useSuspenseQuery,
+} from '@apollo/client'

@@ -9,10 +9,11 @@ import { cacheConfig } from './cache'
 import { typeDefs } from './typeDefs'
 
 export const { getClient, query, PreloadQuery } = registerApolloClient(async () => {
+  const cookieStore = await cookies()
   const contextLink = setContext((_, { headers }) => {
     return {
       headers: {
-        cookie: cookies().toString(),
+        cookie: cookieStore.toString(),
         [X_BOTFI_GRAPHQL_CLIENT_NAME]: 'main/rsc',
         [X_BOTFI_GRAPHQL_CLIENT_VERSION]: env.NEXT_PUBLIC_RELEASE_VERSION ?? '',
         ...headers,
@@ -32,3 +33,5 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(async () 
     typeDefs,
   })
 })
+
+export { gql } from '@apollo/client'
