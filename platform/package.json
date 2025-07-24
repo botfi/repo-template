@@ -20,7 +20,8 @@
     "format:write": "turbo format:write",
     "lint": "turbo lint",
     "refresh": "rm -rf ./{apps,services,packages}/*/node_modules node_modules && pnpm store prune && pnpm install",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "vercel": "pnpm dlx vercel"
   },
   "devDependencies": {
     "@botfi/eslint-config": "workspace:*",
