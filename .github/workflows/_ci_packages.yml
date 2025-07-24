@@ -1,0 +1,58 @@
+name: '[ON_CALL][CI] packages'
+on:
+  workflow_call:
+    inputs:
+      packages:
+        description: 'Space separated package names'
+        required: true
+        type: string
+
+jobs:
+  lint-and-tests:
+    runs-on: ubuntu-22.04
+    container: 'node:22'
+    env:
+      CI: true
+      workspace: platform
+    defaults:
+      run:
+        working-directory: platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10.13.1
+          run_install: false
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: ${{ inputs.cache && 'pnpm' || '' }}
+          cache-dependency-path: 'platform/pnpm-lock.yaml'
+
+      - name: Import environment variables from .env.sample file
+        id: import-env
+        shell: bash
+        run: |
+          cat .env.sample | sed 's/#.*$//' | sed '/^[[:space:]]*$/d' >> $GITHUB_ENV
+          packages="${{ inputs.packages }}"
+          if [[ "$packages" =~ [[:space:]] ]]; then
+            scopes="./packages/{$(echo $packages | tr ' ' ',')}"
+          else
+            scopes="./packages/$packages"
+          fi
+          echo "SCOPES=${scopes}" >> $GITHUB_ENV
+
+      - name: Install dependencies and setup
+        run: |
+          pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm --filter="$SCOPES" typecheck
+
+      - name: Unit test
+        run: pnpm --filter="$SCOPES" test:unit --allowOnly=false
+
+      - name: Integration test
+        run: pnpm --filter="$SCOPES" test:it --allowOnly=false
