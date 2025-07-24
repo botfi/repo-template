@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "db:migrate": "pnpm --workspace-root run db:migrate",
+    "db:studio": "pnpm --workspace-root run db:studio",
+    "db:generate": "pnpm --workspace-root run db:generate",
+    "db:reset": "pnpm --workspace-root run db:reset",
+    "db:recreate": "pnpm --workspace-root run db:recreate",
     "supergraph:compose": "pnpm rover supergraph compose --log WARN --elv2-license accept --config ../../services/api/supergraph.yaml --format json --output ./app/api/graphql/supergraph/supergraph.json",
     "codegen": "NODE_ENV=development graphql-codegen --config config/codegen.ts && prettier --write \"app/**/*.generated.ts\" --cache",
     "predev": "pnpm supergraph:compose",

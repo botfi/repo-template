@@ -10,6 +10,11 @@
   ],
   "scripts": {
     "refresh": "rm -rf ./{apps,services,packages}/*/node_modules node_modules && pnpm store prune && pnpm install",
+    "db:migrate": "pnpm --prefix services/db db:migrate",
+    "db:studio": "pnpm --prefix services/db db:studio",
+    "db:generate": "pnpm --prefix services/db db:generate",
+    "db:reset": "pnpm --prefix services/db db:reset",
+    "db:recreate": "pnpm --prefix services/db db:recreate",
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
