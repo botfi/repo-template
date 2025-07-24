@@ -1,7 +1,12 @@
 import { gql } from '@/lib/apollo/ssr'
 
 export const userQuery = gql`
-  query {
-    hello
+  query Me {
+    me {
+      id
+      name
+      createdAt
+      updatedAt
+    }
   }
 `
