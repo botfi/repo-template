@@ -5,11 +5,11 @@
   "private": true,
   "scripts": {
     "build": "tsx config/printSchema.ts",
-    "typecheck": "tsc --noEmit",
-    "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
+    "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
+    "test:it": "vitest --config=config/it.config.ts",
     "test:unit": "vitest --config=config/unit.config.ts",
-    "test:it": "vitest --config=config/it.config.ts"
+    "typecheck": "tsc --noEmit"
   },
   "sideEffects": false,
   "type": "module",

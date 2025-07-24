@@ -4,12 +4,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
     "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "format:write": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "eslint . --max-warnings 0",
+    "postui:add": "pnpm format:write",
+    "test:it": "echo '[packages/ui] No Integration Tests'",
+    "test:unit": "echo 'vitest --config=config/unit.config.ts'",
     "typecheck": "tsc --noEmit",
-    "ui:add": "shadcn add",
-    "postui:add": "pnpm format:write"
+    "ui:add": "shadcn add"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
