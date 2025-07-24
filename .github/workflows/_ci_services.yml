@@ -1,0 +1,70 @@
+name: '[ON_CALL][CI] services'
+on:
+  workflow_call:
+    inputs:
+      services:
+        description: 'Space separated service names'
+        required: true
+        type: string
+
+jobs:
+  lint-and-tests:
+    runs-on: ubuntu-22.04
+    container: 'node:22'
+    services:
+      pgsql-repo-template.botfi.localhost:
+        image: 'postgres:17'
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: secret
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 1s
+          --health-retries 5
+    env:
+      CI: true
+      workspace: platform
+    defaults:
+      run:
+        working-directory: platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10.13.1
+          run_install: false
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: ${{ inputs.cache && 'pnpm' || '' }}
+          cache-dependency-path: 'platform/pnpm-lock.yaml'
+
+      - name: Import environment variables from .env.sample file
+        id: import-env
+        shell: bash
+        run: |
+          cat .env.sample | sed 's/#.*$//' | sed '/^[[:space:]]*$/d' >> $GITHUB_ENV
+          services="${{ inputs.services }}"
+          if [[ "$services" =~ [[:space:]] ]]; then
+            scopes="./services/{$(echo $services | tr ' ' ',')}"
+          else
+            scopes="./services/$services"
+          fi
+          echo "SCOPES=${scopes}" >> $GITHUB_ENV
+
+      - name: Install dependencies and setup
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm db:generate
+
+      - name: Lint
+        run: pnpm --filter="$SCOPES" typecheck
+
+      - name: Unit test
+        run: pnpm --filter="$SCOPES" test:unit --allowOnly=false
+
+      - name: Integration test
+        run: pnpm --filter="$SCOPES" test:it --allowOnly=false

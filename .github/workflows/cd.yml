@@ -1,0 +1,68 @@
+name: '[CD] Continuous Delivery'
+run-name: '[${{ inputs.app }}:${{ inputs.environment }}] ${{ inputs.description }}'
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: 'App name'
+        required: true
+        type: choice
+        options:
+          - "[Select Please]"
+          - main
+          - "---"
+          - "*"
+        default: "[Select Please]"
+      environment:
+        description: Environment
+        required: true
+        type: choice
+        options:
+          - "[Select Please]"
+          - staging
+          - production
+        default: "[Select Please]"
+      description:
+        description: Purpose
+        default: 'Deploy'
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      app:
+        description: 'App name'
+        required: true
+        type: string
+      environment:
+        description: Environment
+        required: true
+        type: string
+      description:
+        description: Purpose
+        default: 'Deploy'
+        required: false
+        type: string
+
+jobs:
+  main-production:
+    if: ${{ inputs.environment == 'production' && inputs.app == 'main' }}
+    uses: './.github/workflows/_cd_apps.yml'
+    with:
+      app: main
+      environment: production
+      url: "https://main-repo-template.botfi.io"
+    secrets:
+      VERCEL_ORG_ID: CHANGE-ME
+      VERCEL_PROJECT_ID: CHANGE-ME
+      VERCEL_TOKEN: CHANGE-ME
+  main-staging:
+    if: ${{ inputs.environment == 'staging' && (inputs.app == 'main' || inputs.app == '*') }}
+    uses: './.github/workflows/_cd_apps.yml'
+    with:
+      app: main
+      environment: staging
+      url: "https://main-repo-template.botfi.dev"
+    secrets:
+      VERCEL_ORG_ID: CHANGE-ME
+      VERCEL_PROJECT_ID: CHANGE-ME
+      VERCEL_TOKEN: CHANGE-ME

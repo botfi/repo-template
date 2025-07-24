@@ -1,0 +1,131 @@
+name: '[CI] Continuous Integration'
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - unlabeled # Useful when unlabel the Status:Draft
+    branches:
+      - '*' # matches every branch that doesn't contain a '/'
+      - '*/*' # matches every branch containing a single '/'
+      - '**' # matches every branch
+    paths:
+      - 'platform/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'platform/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.base_ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  diff:
+    runs-on: ubuntu-22.04
+    if: contains(github.event.pull_request.labels.*.name, 'Status:Draft') == false
+    outputs:
+      merged-to-main: ${{ steps.check.outputs.merged-to-main }}
+      diff-apps: ${{ steps.check.outputs.diff-apps }}
+      diff-services: ${{ steps.check.outputs.diff-services }}
+      diff-packages: ${{ steps.check.outputs.diff-packages}}
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+      - name: Checkout the ${{ github.base_ref }}
+        uses: actions/checkout@v4
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          ref: ${{ github.base_ref }}
+      - name: Checkout the ${{ github.ref }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ github.ref == 'refs/heads/main' && '0' || '1' }}
+      - id: check
+        run: |
+          declare merged_to_main
+          declare -A diff_apps
+          declare -A diff_services
+          declare -A diff_packages
+
+          if [ ${{ github.event_name }} = push ]; then
+            if [ ${{ github.ref }} = refs/heads/main ]; then
+              git diff --name-only ${{ github.event.after }} ${{ github.event.before }} > diff.txt
+              merged_to_main=${{ github.ref }}
+            fi
+          else
+            git diff --name-only HEAD origin/${{ github.base_ref }} > diff.txt
+          fi
+
+
+          printf '%b\n' "$(cat diff.txt)"
+
+          echo "START========================================================="
+
+          while IFS= read -r file;
+          do
+            echo $file
+            if [[ $file = platform/apps/main/* ]]; then
+              diff_apps[main]=1
+              continue
+            elif [[ $file = platform/services/api/* ]]; then
+              diff_apps[main]=1
+              diff_services[api]=1
+              continue
+            elif [[ $file = platform/services/db/* ]]; then
+              diff_services[db]=1
+              diff_services[api]=1
+              continue
+            elif [[ $file = platform/packages/env/* ]]; then
+              diff_packages[env]=1
+              continue
+            elif [[ $file = platform/packages/ui/* ]]; then
+              diff_packages[ui]=1
+              continue
+            else
+              continue
+            fi
+          done < diff.txt
+
+          echo "diff-apps=${!diff_apps[@]}" >> $GITHUB_OUTPUT
+          echo "diff-services=${!diff_services[@]}" >> $GITHUB_OUTPUT
+          echo "diff-packages=${!diff_packages[@]}" >> $GITHUB_OUTPUT
+          echo "merged-to-main=${merged_to_main}" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
+
+  apps:
+    needs:
+      - diff
+    if: ${{ needs.diff.outputs.diff-apps }}
+    uses: './.github/workflows/_ci_apps.yml'
+    with:
+      apps: ${{ needs.diff.outputs.diff-apps }}
+      willBuild: ${{ needs.diff.outputs.merged-to-main != '' }}
+    secrets: inherit
+
+  services:
+    needs:
+      - diff
+    if: ${{ needs.diff.outputs.diff-services }}
+    uses: './.github/workflows/_ci_services.yml'
+    with:
+      services: ${{ needs.diff.outputs.diff-services }}
+    secrets: inherit
+
+  packages:
+    needs:
+      - diff
+    if: ${{ needs.diff.outputs.diff-packages }}
+    uses: './.github/workflows/_ci_packages.yml'
+    with:
+      packages: ${{ needs.diff.outputs.diff-packages }}
+    secrets: inherit
