@@ -7,6 +7,7 @@ import FederationPlugin from '@pothos/plugin-federation'
 import PrismaPlugin from '@pothos/plugin-prisma'
 import ScopeAuthPlugin from '@pothos/plugin-scope-auth'
 import ZodPlugin from '@pothos/plugin-zod'
+import { GraphQLError } from 'graphql'
 
 import type { Context } from './definition'
 
@@ -17,8 +18,9 @@ const builder = new SchemaBuilder<{
   PrismaTypes: PrismaTypes
   Context: Context
   AuthScopes: {
-    authenticated: boolean
+    auth: boolean
   }
+  DefaultAuthStrategy: 'all'
   Scalars: {
     ID: {
       Output: string
@@ -37,9 +39,19 @@ const builder = new SchemaBuilder<{
 }>({
   plugins: [DirectivePlugin, PrismaPlugin, ZodPlugin, ScopeAuthPlugin, FederationPlugin],
   scopeAuth: {
+    defaultStrategy: 'all',
     authScopes: async (context) => ({
-      authenticated: !!context.sub,
+      auth: !!context.sub,
     }),
+    unauthorizedError: (_, __, { path, fieldNodes }) => {
+      return new GraphQLError(`Not authorized to read fields for ${path.typename}: ${path.key}`, {
+        path: [path.typename, path.key].filter(Boolean) as (string | number)[],
+        nodes: fieldNodes,
+        extensions: {
+          code: 'UNAUTHORIZED',
+        },
+      })
+    },
   },
   prisma: {
     client: prisma,
