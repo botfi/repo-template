@@ -64,6 +64,8 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           pnpm db:generate
+      - name: Preprocess
+        run: pnpm --filter="$SCOPES" supergraph:compose
 
       - name: Lint
         run: |
