@@ -1,0 +1,187 @@
+name: '[ON_CALL][CD] for apps'
+on:
+  workflow_call:
+    inputs:
+      app:
+        description: 'Codename of the App. Supported: main'
+        required: true
+        type: string
+      environment:
+        description: 'One of preview / staging / canary / production'
+        required: false
+        type: string
+        default: preview
+      url:
+        description: 'Release URL of the app'
+        required: false
+        type: string
+      cache:
+        description: 'Enable / disable cache'
+        required: false
+        type: boolean
+        default: true
+    secrets:
+      VERCEL_ORG_ID:
+        required: true
+      VERCEL_PROJECT_ID:
+        required: true
+      VERCEL_TOKEN:
+        required: true
+      SENTRY_AUTH_TOKEN:
+        required: false
+jobs:
+  utils:
+    runs-on: ubuntu-22.04
+    outputs:
+      deployment: ${{ steps.deployment-status.outputs.deployment }}
+      url: ${{ steps.deployment-status.outputs.url }}
+      vercel-environment: ${{ steps.deployment-status.outputs.vercel-environment }}
+      release: ${{ steps.deployment-status.outputs.release }}
+      db: ${{ steps.deployment-status.outputs.db }}
+      inngest: ${{ steps.deployment-status.outputs.inngest }}
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+      - name: Prepare deployment signal
+        id: deployment-status
+        run: |
+          env_name=""
+          url=""
+          db=""
+          inngest=""
+          vercel_environment="production" # NOTE: Will not be changed
+          case "${{ inputs.environment }}" in
+            "preview")
+              env_name="Prvw"
+              url="${{ inputs.url }}"
+              ;;
+            "staging")
+              env_name="Stg"
+              url="${{ inputs.url }}"
+              ;;
+            "production")
+              env_name="Prod"
+              url="${{ inputs.url }}"
+              ;;
+            *)
+              echo "Not supported env ${{ inputs.environment }}"
+              exit 1
+              ;;
+          esac
+
+          app_name=""
+          case "${{ inputs.app }}" in
+            "main")
+              app_name="MAIN"
+              db="db"
+              # inngest="${url}/api/inngest"
+              ;;
+            *)
+              echo "Not supported app ${{ inputs.app }}"
+              exit 1
+              ;;
+          esac
+
+          release=""
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            release="${{ github.ref_name }}"
+          else
+            release="$(TZ=Asia/Bangkok date +%Y-%m-%d)"
+          fi
+
+          echo "deployment=${app_name}:${env_name}" >> $GITHUB_OUTPUT
+          echo "url=${url}" >> $GITHUB_OUTPUT
+          echo "vercel-environment=${vercel_environment}" >> $GITHUB_OUTPUT
+          echo "release=${release}" >> $GITHUB_OUTPUT
+          echo "db=${db}" >> $GITHUB_OUTPUT
+          echo "inngest=${inngest}" >> $GITHUB_OUTPUT
+
+  deploy:
+    needs:
+      - utils
+    runs-on: ubuntu-22.04
+    container: 'node:22'
+    outputs:
+      signal_deployment: ${{ needs.utils.outputs.deployment }}
+    environment:
+      name: ${{ needs.utils.outputs.deployment }}
+      url: ${{ needs.utils.outputs.url }}
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ENV: ${{ needs.utils.outputs.vercel-environment }}
+      NEXT_PUBLIC_RELEASE_VERSION: ${{ needs.utils.outputs.release }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    defaults:
+      run:
+        working-directory: platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10.13.1
+          run_install: false
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: ${{ inputs.cache && 'pnpm' || '' }}
+          cache-dependency-path: 'platform/pnpm-lock.yaml'
+
+      - name: Install Corepack
+        # See: https://github.com/actions/setup-node/issues/1222
+        run: |
+          npm i -g --force corepack
+          corepack enable
+          pnpm -v
+        shell: bash
+
+      - name: Install app dependencies
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm dedupe
+
+      - name: Generate Prisma runtime
+        run: pnpm db:generate
+        working-directory: platform/services/db
+        if: ${{ needs.utils.outputs.db != '' }}
+      # - name: Manual add Prisma runtime binary
+      #   if: ${{ needs.utils.outputs.db != '' }}
+      #   run: |
+      #     ls -lah services/db/prisma/client/libquery_engine-*
+      #     # rm -f services/db/prisma/client/libquery_engine-debian-*
+      #     ls -lah services/db/prisma/client/libquery_engine-*
+      #     mkdir -p apps/${{ inputs.app }}/prisma
+      #     cp -r services/db/prisma/client apps/${{ inputs.app }}/prisma/
+      #     rm -f apps/${{ inputs.app }}/prisma/client/libquery_engine-debian-*
+
+      - name: Pull Vercel Environment Information
+        run: |
+          pnpm vercel pull --yes --environment=${VERCEL_ENV} --token=${VERCEL_TOKEN}
+          ls -la .vercel
+          cat .vercel/project.json
+
+      - name: '[${{ inputs.environment }}] Build Project Artifacts'
+        if: ${{ env.VERCEL_ENV == 'production' }}
+        run: pnpm vercel build --prod --debug
+        env:
+          APOLLO_ELV2_LICENSE: accept
+      - name: '[${{ inputs.environment }}] Migrate database'
+        if: ${{ env.VERCEL_ENV == 'production' && needs.utils.outputs.db != '' }}
+        run: |
+          cp ../../.vercel/.env.production.local .env
+          pnpm db:deploy
+        working-directory: platform/services/db
+
+      - name: '[${{ inputs.environment }}] Deploy Project Artifacts to Vercel'
+        if: ${{ env.VERCEL_ENV == 'production' }}
+        run: pnpm vercel deploy --debug --prebuilt --prod --token=${VERCEL_TOKEN}
+
+      - name: '[${{ inputs.environment }}] Manual sync the app to Inngest'
+        if: ${{ needs.utils.outputs.inngest != '' }}
+        run: curl -vvv -X PUT ${{ needs.utils.outputs.inngest }}
