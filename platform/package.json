@@ -1,0 +1,51 @@
+{
+  "repository": "https://github.com/botfi/repo-template.git",
+  "name": "@botfi/repo-template",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "refresh": "rm -rf ./{apps,services,packages}/*/node_modules node_modules && pnpm store prune && pnpm install",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "format:check": "turbo format:check",
+    "format:write": "turbo format:write"
+  },
+  "devDependencies": {
+    "@botfi/eslint-config": "workspace:*",
+    "@botfi/tsconfig": "workspace:*",
+    "eslint": "9.31.0",
+    "prettier": "3.6.2",
+    "prettier-plugin-organize-imports": "4.2.0",
+    "prettier-plugin-tailwindcss": "0.6.14",
+    "turbo": "2.5.5",
+    "typescript": "5.8.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "@vercel/speed-insights",
+      "prisma",
+      "sharp"
+    ],
+    "ignoredBuiltDependencies": [
+      "@apollo/protobufjs",
+      "@apollo/rover",
+      "@sentry/cli",
+      "core-js",
+      "core-js-pure",
+      "esbuild"
+    ]
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "pnpm@10.13.1"
+}

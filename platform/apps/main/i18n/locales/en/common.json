@@ -1,0 +1,7 @@
+{
+  "format": {
+    "long": "yyyy/MM/dd"
+  },
+  "hello": "Hello World",
+  "loading": "Loading..."
+}

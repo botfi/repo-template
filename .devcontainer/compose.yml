@@ -1,0 +1,32 @@
+x-base: &base
+  tty: true
+  env_file: .env.local
+  networks:
+    botfi.localhost: {}
+  volumes:
+    - .devcontainer/.yarnrc:/root/.yarnrc:ro
+    - .:/workspace
+x-node: &node
+  <<: *base
+  build:
+    context: .
+    dockerfile: .devcontainer/Dockerfile.node22
+
+services:
+  platform:
+    <<: *node
+    container_name: repo-template.botfi.localhost
+    hostname: repo-template.botfi.localhost
+    networks:
+      botfi.localhost: {}
+    working_dir: /workspace/platform
+    env_file: platform/.env.local
+    volumes:
+      - platform-vscode-server:/root/.vscode-server
+      - platform-pnpm:/pnpm
+      - .:/workspace
+    ports:
+      - 15000:15000 # main-app
+volumes:
+  platform-vscode-server: {}
+  platform-pnpm: {}

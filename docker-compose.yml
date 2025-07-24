@@ -1,9 +1,0 @@
-version: "3.8"
-
-networks:
-  botfi.localhost:
-    name: botfi.localhost
-    external: true
-
-volumes:
-  pgsql-data: {}

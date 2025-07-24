@@ -1,0 +1,28 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalEnv": ["LOG_ENABLED", "LOG_LEVEL", "NODE_ENV"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
+    },
+    "format:check": {
+      "dependsOn": ["^format:check"]
+    },
+    "format:write": {
+      "dependsOn": ["^format:write"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

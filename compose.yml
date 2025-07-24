@@ -1,0 +1,23 @@
+services:
+  pgsql:
+    tty: true
+    networks:
+      botfi.localhost: {}
+    image: postgres:17
+    container_name: pgsql-repo-template.botfi.localhost
+    hostname: pgsql-repo-template.botfi.localhost
+    ports:
+      - 5432
+    environment:
+      POSTGRES_USER: ${DB_USER:-root}
+      POSTGRES_PASSWORD: ${DB_PASS:-secret}
+    volumes:
+       - pgsql-data:/data/postgres
+
+networks:
+  botfi.localhost:
+    name: botfi.localhost
+    external: true
+
+volumes:
+  pgsql-data: {}

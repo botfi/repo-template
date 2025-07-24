@@ -1,0 +1,53 @@
+{
+  "name": "@botfi/main-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "supergraph:compose": "pnpm rover supergraph compose --log WARN --elv2-license accept --config ../../services/api/supergraph.yaml --format json --output ./app/api/graphql/supergraph/supergraph.json",
+    "codegen": "NODE_ENV=development graphql-codegen --config config/codegen.ts && prettier --write \"app/**/*.generated.ts\" --cache",
+    "predev": "pnpm supergraph:compose",
+    "dev": "next dev --turbopack --port ${DEV_MAIN_PORT:-15000}",
+    "prebuild": "pnpm supergraph:compose",
+    "build": "next build",
+    "build:clean": "rm -rf .next .turbo && pnpm build",
+    "start": "next start -p ${DEV_MAIN_PORT:-15000}",
+    "lint": "next lint && pnpm typecheck && pnpm format:check",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "format:write": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "typecheck": "tsc --noEmit",
+    "i18n:parse": "i18next --config config/i18next-parser.ts"
+  },
+  "dependencies": {
+    "@apollo/client": "3.13.8",
+    "@apollo/client-integration-nextjs": "0.12.2",
+    "@botfi/api": "workspace:*",
+    "@botfi/env": "workspace:*",
+    "@botfi/ui": "workspace:*",
+    "accept-language": "3.0.20",
+    "diff": "8.0.2",
+    "i18next": "25.3.2",
+    "i18next-browser-languagedetector": "8.2.0",
+    "i18next-resources-to-backend": "1.2.1",
+    "next": "15.4.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-i18next": "15.6.1",
+    "server-only": "0.0.1",
+    "translation-check": "1.1.1",
+    "zod": "4.0.5"
+  },
+  "devDependencies": {
+    "@apollo/rover": "0.34.1",
+    "@botfi/eslint-config": "workspace:*",
+    "@botfi/tsconfig": "workspace:*",
+    "@graphql-codegen/cli": "5.0.7",
+    "@graphql-codegen/client-preset": "4.8.3",
+    "@graphql-codegen/near-operation-file-preset": "3.1.0",
+    "@graphql-typed-document-node/core": "3.2.0",
+    "@types/node": "^22",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "i18next-parser": "^9.3.0",
+    "typescript": "5.8.3"
+  }
+}
