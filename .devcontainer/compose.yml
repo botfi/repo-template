@@ -23,9 +23,10 @@ services:
     env_file: platform/.env.local
     volumes:
       - platform-vscode-server:/root/.vscode-server
-      - .devcontainer/.yarnrc:/root/.yarnrc:ro
+      - platform-pnpm:/pnpm
       - .:/workspace
     ports:
       - 15000:15000 # main-app
 volumes:
   platform-vscode-server: {}
+  platform-pnpm: {}
