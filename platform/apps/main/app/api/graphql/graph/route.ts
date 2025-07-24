@@ -1,7 +1,8 @@
 import { createHandler } from '@botfi/api/graph'
 import type { NextRequest } from 'next/server'
 
-const preprocess = async (req: NextRequest) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const preprocess = async (_req: NextRequest) => {
   const userSub = 'user-sub-123'
 
   return userSub

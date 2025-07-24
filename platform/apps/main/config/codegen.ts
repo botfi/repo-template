@@ -6,7 +6,15 @@ const config: CodegenConfig = {
   schema: [getApiUrl('supergraph'), './lib/apollo/typeDefs.ts'],
   documents: ['app/[lang]/**/*.graphql'],
   generates: {
-    'app/[lang]/_components/types.generated.ts': { plugins: ['typescript'] },
+    'app/[lang]/_components/types.generated.ts': {
+      plugins: ['typescript'],
+      config: {
+        scalars: {
+          DateTime: 'string',
+          JSON: 'unknown',
+        },
+      },
+    },
     'app/[lang]': {
       preset: 'near-operation-file',
       presetConfig: {
@@ -14,6 +22,12 @@ const config: CodegenConfig = {
         baseTypesPath: '_components/types.generated.ts',
       },
       plugins: ['typescript-operations', 'typed-document-node'],
+      config: {
+        scalars: {
+          DateTime: 'string',
+          JSON: 'unknown',
+        },
+      },
     },
   },
 }
