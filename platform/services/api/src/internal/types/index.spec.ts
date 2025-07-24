@@ -1,23 +1,38 @@
-import { constructTestServer, extractSingleResult } from 'config/it.utils'
+import { constructTestInternalServer } from 'config/graphql'
 import { gql } from 'graphql-tag'
 
-const HELLO = gql`
-  query Hello {
-    hello
-  }
-`
+describe('query hello', () => {
+  const HELLO_QUERY = gql`
+    query Hello {
+      hello
+    }
+  `
 
-describe('hello', () => {
   it('should return hello', async () => {
-    const { server, context } = await constructTestServer('user-sub-123')
-    const res = await server.executeOperation(
-      {
-        query: HELLO,
-      },
-      {
-        contextValue: context,
-      },
-    )
-    expect(extractSingleResult(res)).toEqual({ data: { hello: 'Hello world!' } })
+    const { result } = await constructTestInternalServer({ query: HELLO_QUERY })
+    expect(result).toEqual({ data: { hello: 'Hello world!' } })
+  })
+
+  it('should return hello regardless of api key', async () => {
+    const { result } = await constructTestInternalServer({ apiKey: 'invalid', query: HELLO_QUERY })
+    expect(result).toEqual({ data: { hello: 'Hello world!' } })
+  })
+})
+
+describe('mutate hello', () => {
+  const HELLO_MUTATION = gql`
+    mutation Hello {
+      hello
+    }
+  `
+  it('should return hello', async () => {
+    const { result } = await constructTestInternalServer({ query: HELLO_MUTATION })
+    expect(result).toEqual({ data: { hello: 'Hello world!' } })
+  })
+
+  it('should return error if invalid api key is provided', async () => {
+    const { result } = await constructTestInternalServer({ apiKey: 'invalid', query: HELLO_MUTATION })
+    expect(result?.errors).toBeDefined()
+    expect(result?.errors?.[0].extensions?.code).toMatch(/UNAUTHORIZED/)
   })
 })

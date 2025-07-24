@@ -8,13 +8,16 @@ import { builder } from '../builder'
  * ```
  */
 builder.queryType({
+  authScopes: { api: true },
   fields: (t) => ({
     hello: t.string({
+      skipTypeScopes: true,
       resolve: () => 'Hello world!',
     }),
   }),
 })
 builder.mutationType({
+  authScopes: { api: true },
   fields: (t) => ({
     hello: t.string({
       resolve: () => 'Hello world!',

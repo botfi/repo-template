@@ -37,8 +37,10 @@ const builder = new SchemaBuilder<{
 }>({
   plugins: [PrismaPlugin, ZodPlugin, ScopeAuthPlugin],
   scopeAuth: {
-    unauthorizedError: (_parent, _context, _info, result) => {
+    unauthorizedError: (_parent, _context, { path, fieldNodes }, result) => {
       return new GraphQLError(result.message ?? 'Unauthorized', {
+        path: [path.typename, path.key].filter(Boolean) as (string | number)[],
+        nodes: fieldNodes,
         extensions: {
           code: 'UNAUTHORIZED',
         },

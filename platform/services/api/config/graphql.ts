@@ -50,16 +50,35 @@ export async function constructTestServer(
   }
 }
 
-export const constructTestInternalServer = async (
-  headers: Record<string, string> = {
-    [X_BOTFI_INTERNAL_API_KEY]: env.INTERNAL_API_KEY,
-  },
-): Promise<{
-  server: ApolloServer<InternalContext>
-  context: InternalContext
-}> => {
+// Overload: with query
+export async function constructTestInternalServer(opts?: {
+  apiKey?: string
+  query: DocumentNode
+  headers?: Record<string, string>
+}): Promise<{ server: ApolloServer<InternalContext>; context: InternalContext; result: Record<string, any> }>
+// Overload: without query
+export async function constructTestInternalServer(opts?: {
+  apiKey?: string
+  query?: undefined
+  headers?: Record<string, string>
+}): Promise<{ server: ApolloServer<InternalContext>; context: InternalContext; result: undefined }>
+// Implementation
+export async function constructTestInternalServer(
+  opts: { apiKey?: string; query?: DocumentNode; headers?: Record<string, string> } = {},
+): Promise<
+  | { server: ApolloServer<InternalContext>; context: InternalContext; result: Record<string, any> }
+  | { server: ApolloServer<InternalContext>; context: InternalContext; result: undefined }
+> {
+  const apiKey = typeof opts.apiKey === 'undefined' ? env.INTERNAL_API_KEY : opts.apiKey
+  const { query, headers = { [X_BOTFI_INTERNAL_API_KEY]: apiKey } } = opts
   const internal = new ApolloServer<InternalContext>({ schema: internalSchema })
-  return { server: internal, context: { headers: { ...headers } } satisfies InternalContext }
+  const context = { headers: { ...headers } } satisfies InternalContext
+  if (query) {
+    const res = await internal.executeOperation({ query }, { contextValue: context })
+    const result = extractSingleResult(res)
+    return { server: internal, context, result }
+  }
+  return { server: internal, context, result: undefined }
 }
 
 export const extractSingleResult = (res: GraphQLResponse<Record<string, any>>) => {
