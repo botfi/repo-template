@@ -7,7 +7,7 @@ const main = async () => {
     console.log('Seeding database')
     await prisma.$connect()
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       const user = await UserFactory.create()
       const account = await AccountFactory.create({ userId: user.id })
       console.log(`Created user ${user.id} with account ${account.id}`)
