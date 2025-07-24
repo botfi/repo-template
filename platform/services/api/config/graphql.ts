@@ -11,19 +11,21 @@ import { X_BOTFI_INTERNAL_API_KEY } from '../src/utils'
 type Server = 'graph' | 'internal'
 
 // Overload: with query
-export async function constructTestServer(
-  sub: string | null | undefined,
-  opts: { query: DocumentNode; headers?: Record<string, string> },
-): Promise<{ server: ApolloServer<GraphContext>; context: GraphContext; result: Record<string, any> }>
+export async function constructTestServer(opts: {
+  sub?: string | null
+  query: DocumentNode
+  headers?: Record<string, string>
+}): Promise<{ server: ApolloServer<GraphContext>; context: GraphContext; result: Record<string, any> }>
 // Overload: without query
+export async function constructTestServer(opts?: {
+  sub?: string | null
+  query?: undefined
+  headers?: Record<string, string>
+}): Promise<{ server: ApolloServer<GraphContext>; context: GraphContext; result: undefined }>
+// Implementation
 export async function constructTestServer(
-  sub?: string | null,
-  opts?: { query?: undefined; headers?: Record<string, string> },
-): Promise<{ server: ApolloServer<GraphContext>; context: GraphContext; result: undefined }>
-
-export async function constructTestServer(
-  sub?: string | null,
-  { query, headers }: { query?: DocumentNode; headers?: Record<string, string> } = {
+  opts: { sub?: string | null; query?: DocumentNode; headers?: Record<string, string> } = {
+    sub: null,
     query: undefined,
     headers: {},
   },
@@ -32,10 +34,10 @@ export async function constructTestServer(
   | { server: ApolloServer<GraphContext>; context: GraphContext; result: undefined }
 > {
   const server = new ApolloServer<GraphContext>({ schema: graphSchema })
-  const context = { headers: { ...headers }, sub: sub as string } satisfies GraphContext
+  const context = { headers: { ...opts.headers }, sub: opts.sub as string } satisfies GraphContext
 
-  if (query) {
-    const res = await server.executeOperation({ query }, { contextValue: context })
+  if (opts.query) {
+    const res = await server.executeOperation({ query: opts.query }, { contextValue: context })
     const result = extractSingleResult(res)
     return {
       server,

@@ -43,8 +43,8 @@ const builder = new SchemaBuilder<{
     authScopes: async (context) => ({
       auth: !!context.sub,
     }),
-    unauthorizedError: (_, __, { path, fieldNodes }) => {
-      return new GraphQLError(`Not authorized to read fields for ${path.typename}: ${path.key}`, {
+    unauthorizedError: (_, __, { path, fieldNodes }, result) => {
+      return new GraphQLError(result.message ?? 'Unauthorized', {
         path: [path.typename, path.key].filter(Boolean) as (string | number)[],
         nodes: fieldNodes,
         extensions: {

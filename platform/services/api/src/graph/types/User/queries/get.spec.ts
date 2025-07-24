@@ -24,19 +24,19 @@ describe('query me GraphQL integration', () => {
   `
 
   it('should throw an error if user is not authenticated', async () => {
-    const { result } = await constructTestServer(undefined, { query: ME_QUERY })
+    const { result } = await constructTestServer({ sub: undefined, query: ME_QUERY })
     expect(result.errors).toBeDefined()
     expect(JSON.stringify(result.errors)).toMatch(/UNAUTHORIZED/)
   })
 
   it('should throw an error if user is not found', async () => {
-    const { result } = await constructTestServer('non-existent-user', { query: ME_QUERY })
+    const { result } = await constructTestServer({ sub: 'non-existent-user', query: ME_QUERY })
     expect(result.errors).toBeDefined()
     expect(JSON.stringify(result.errors)).toMatch(/NOT_FOUND/)
   })
 
   it('should return the user', async () => {
-    const { result } = await constructTestServer(user.id, { query: ME_QUERY })
+    const { result } = await constructTestServer({ sub: user.id, query: ME_QUERY })
     expect(result.errors).toBeUndefined()
     expect(result.data?.me.id).toBe(user.id)
     expect(result.data?.me.name).toBe(user.name)
