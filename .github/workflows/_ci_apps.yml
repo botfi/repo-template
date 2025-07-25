@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-22.04
     container: 'node:22'
     services:
-      pgsql-repo-template.botfi.localhost:
+      pgsql.botfi.localhost:
         image: 'postgres:17'
         env:
           POSTGRES_USER: root
@@ -64,6 +64,8 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           pnpm db:generate
+      - name: Preprocess
+        run: pnpm --filter="$SCOPES" supergraph:compose
 
       - name: Lint
         run: |

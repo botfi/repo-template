@@ -74,11 +74,11 @@ jobs:
           while IFS= read -r file;
           do
             echo $file
-            if [[ $file = platform/apps/main/* ]]; then
-              diff_apps[main]=1
+            if [[ $file = platform/apps/web/* ]]; then
+              diff_apps[web]=1
               continue
             elif [[ $file = platform/services/api/* ]]; then
-              diff_apps[main]=1
+              diff_apps[web]=1
               diff_services[api]=1
               continue
             elif [[ $file = platform/services/db/* ]]; then

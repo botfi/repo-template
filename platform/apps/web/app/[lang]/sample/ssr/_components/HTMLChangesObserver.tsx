@@ -106,15 +106,16 @@ const styles = {
   bgRed: 'background: red; color:black',
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function logDiff(diff: any[]) {
-  let output = '',
-    styleArr: string[] = []
+  let output = ''
+  const styleArr: string[] = []
 
   if (diff.length === 1 && diff[0] && !diff[0].added && !diff[0].removed) return output
 
   for (const part of diff) {
-    var index = diff.indexOf(part),
-      partValue = part.value
+    const index = diff.indexOf(part)
+    const partValue = part.value
 
     if (part.added || part.removed) {
       output += index === 0 ? '\n' : ''

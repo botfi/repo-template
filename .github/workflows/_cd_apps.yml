@@ -3,7 +3,7 @@ on:
   workflow_call:
     inputs:
       app:
-        description: 'Codename of the App. Supported: main'
+        description: 'Codename of the App. Supported: web'
         required: true
         type: string
       environment:
@@ -74,8 +74,8 @@ jobs:
 
           app_name=""
           case "${{ inputs.app }}" in
-            "main")
-              app_name="MAIN"
+            "web")
+              app_name="WEB"
               db="db"
               # inngest="${url}/api/inngest"
               ;;
@@ -116,6 +116,8 @@ jobs:
       VERCEL_ENV: ${{ needs.utils.outputs.vercel-environment }}
       NEXT_PUBLIC_RELEASE_VERSION: ${{ needs.utils.outputs.release }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      CI: true
+      workspace: platform
     defaults:
       run:
         working-directory: platform
@@ -132,13 +134,13 @@ jobs:
           node-version: 22
           cache: ${{ inputs.cache && 'pnpm' || '' }}
           cache-dependency-path: 'platform/pnpm-lock.yaml'
-
       - name: Install Corepack
         # See: https://github.com/actions/setup-node/issues/1222
         run: |
           npm i -g --force corepack
           corepack enable
           pnpm -v
+          pnpm config list
         shell: bash
 
       - name: Install app dependencies
@@ -166,21 +168,21 @@ jobs:
           ls -la .vercel
           cat .vercel/project.json
 
-      - name: '[${{ inputs.environment }}] Build Project Artifacts'
-        if: ${{ env.VERCEL_ENV == 'production' }}
-        run: pnpm vercel build --prod --debug
-        env:
-          APOLLO_ELV2_LICENSE: accept
-      - name: '[${{ inputs.environment }}] Migrate database'
-        if: ${{ env.VERCEL_ENV == 'production' && needs.utils.outputs.db != '' }}
-        run: |
-          cp ../../.vercel/.env.production.local .env
-          pnpm db:deploy
-        working-directory: platform/services/db
+      # - name: '[${{ inputs.environment }}] Build Project Artifacts'
+      #   if: ${{ env.VERCEL_ENV == 'production' }}
+      #   run: pnpm vercel build --prod --debug
+      #   env:
+      #     APOLLO_ELV2_LICENSE: accept
+      # - name: '[${{ inputs.environment }}] Migrate database'
+      #   if: ${{ env.VERCEL_ENV == 'production' && needs.utils.outputs.db != '' }}
+      #   run: |
+      #     cp ../../.vercel/.env.production.local .env
+      #     pnpm db:deploy
+      #   working-directory: platform/services/db
 
-      - name: '[${{ inputs.environment }}] Deploy Project Artifacts to Vercel'
-        if: ${{ env.VERCEL_ENV == 'production' }}
-        run: pnpm vercel deploy --debug --prebuilt --prod --token=${VERCEL_TOKEN}
+      # - name: '[${{ inputs.environment }}] Deploy Project Artifacts to Vercel'
+      #   if: ${{ env.VERCEL_ENV == 'production' }}
+      #   run: pnpm vercel deploy --debug --prebuilt --prod --token=${VERCEL_TOKEN}
 
       - name: '[${{ inputs.environment }}] Manual sync the app to Inngest'
         if: ${{ needs.utils.outputs.inngest != '' }}

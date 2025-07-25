@@ -1,4 +1,4 @@
-import { env } from '@botfi/env/main'
+import { env } from '@botfi/env/web'
 import { Button } from '@botfi/ui/lib/button'
 
 import { getTranslation } from '@/i18n/server'

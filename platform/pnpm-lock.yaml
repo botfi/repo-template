@@ -33,7 +33,7 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  apps/main:
+  apps/web:
     dependencies:
       '@apollo/client':
         specifier: 3.13.8

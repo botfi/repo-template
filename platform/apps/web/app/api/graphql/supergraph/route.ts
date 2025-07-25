@@ -1,6 +1,6 @@
 import { createHandler } from '@botfi/api/supergraph'
 import { getApiUrl, X_BOTFI_INTERNAL_API_KEY } from '@botfi/api/utils'
-import { env } from '@botfi/env/main'
+import { env } from '@botfi/env/web'
 import { NextRequest } from 'next/server'
 
 console.log(createHandler)

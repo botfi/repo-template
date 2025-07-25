@@ -10,7 +10,7 @@ import {
 } from './index'
 
 // Mock the env module
-vi.mock('@botfi/env/main', () => ({
+vi.mock('@botfi/env/web', () => ({
   env: {
     NEXT_PUBLIC_URL: 'https://botfi.io',
   },
@@ -69,7 +69,7 @@ describe('utils', () => {
     })
 
     it('should have correct X_ZAPASS_INTERNAL_API_KEY value', () => {
-      expect(X_BOTFI_INTERNAL_API_KEY).toBe('x-bf-api-key-main')
+      expect(X_BOTFI_INTERNAL_API_KEY).toBe('x-bf-api-key-web')
     })
 
     it('should have correct X_ZAPASS_AUTHORIZATION value', () => {

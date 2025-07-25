@@ -36,7 +36,7 @@ export const createHandler = (graphqlEndpoint: string = apiUrl.pathname, supergr
       graphqlEndpoint,
       fetchAPI: { Response },
       graphiql: {
-        title: '[BF] MAIN Supergraph',
+        title: '[BF] WEB Supergraph',
         defaultQuery: `query Hello {\n\thello\n}`,
       },
       logging: 'debug',

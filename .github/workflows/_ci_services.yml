@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
     container: 'node:22'
     services:
-      pgsql-repo-template.botfi.localhost:
+      pgsql.botfi.localhost:
         image: 'postgres:17'
         env:
           POSTGRES_USER: root
