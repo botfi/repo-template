@@ -1,5 +1,5 @@
 import { ApolloServer, GraphQLResponse } from '@apollo/server'
-import { env } from '@botfi/env/main'
+import { env } from '@botfi/env/web'
 
 import { type DocumentNode } from 'graphql'
 import { schema as graphSchema } from '../src/graph'

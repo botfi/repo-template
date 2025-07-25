@@ -1,6 +1,6 @@
 {
   "name": "@botfi/api",
-  "description": "API for the MAIN",
+  "description": "API for the WEB",
   "version": "0.0.0",
   "private": true,
   "scripts": {

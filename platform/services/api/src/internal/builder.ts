@@ -1,6 +1,6 @@
 import { prisma } from '@botfi/db'
 import type PrismaTypes from '@botfi/db/graphql'
-import { env } from '@botfi/env/main'
+import { env } from '@botfi/env/web'
 import SchemaBuilder from '@pothos/core'
 import PrismaPlugin from '@pothos/plugin-prisma'
 import ScopeAuthPlugin from '@pothos/plugin-scope-auth'

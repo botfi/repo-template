@@ -15,5 +15,5 @@ const internalSchemaAsString = printSubgraphSchema(lexicographicSortSchema(inter
 // const internalSchemaAsJson = introspectionFromSchema(internal)
 
 writeFileSync('./graph.graphql', graphSchemaAsString)
-writeFileSync('../federated/main-internal.federated.graphql', internalSchemaAsString)
-// writeFileSync('../federated/main-internal.schema.json', JSON.stringify(internalSchemaAsJson, null, 2))
+writeFileSync('../federated/web-internal.federated.graphql', internalSchemaAsString)
+// writeFileSync('../federated/web-internal.schema.json', JSON.stringify(internalSchemaAsJson, null, 2))
