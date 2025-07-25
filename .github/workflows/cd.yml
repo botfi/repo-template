@@ -9,7 +9,7 @@ on:
         type: choice
         options:
           - "[Select Please]"
-          - main
+          - web
           - "---"
           - "*"
         default: "[Select Please]"
@@ -44,25 +44,25 @@ on:
         type: string
 
 jobs:
-  main-production:
-    if: ${{ inputs.environment == 'production' && inputs.app == 'main' }}
+  web-production:
+    if: ${{ inputs.environment == 'production' && inputs.app == 'web' }}
     uses: './.github/workflows/_cd_apps.yml'
     with:
-      app: main
+      app: web
       environment: production
       url: "https://repo-template.vercel.app"
     secrets:
       VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID_MAIN_PROD }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID_WEB_PROD }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-  main-staging:
-    if: ${{ inputs.environment == 'staging' && (inputs.app == 'main' || inputs.app == '*') }}
+  web-staging:
+    if: ${{ inputs.environment == 'staging' && (inputs.app == 'web' || inputs.app == '*') }}
     uses: './.github/workflows/_cd_apps.yml'
     with:
-      app: main
-      environment: staging
-      url: "https://repo-template-stg.vercel.app"
+      app: web
+      environment: production
+      url: "https://repo-template.vercel.app"
     secrets:
       VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID_MAIN_STG }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID_WEB_PROD }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

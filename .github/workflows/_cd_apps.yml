@@ -3,7 +3,7 @@ on:
   workflow_call:
     inputs:
       app:
-        description: 'Codename of the App. Supported: main'
+        description: 'Codename of the App. Supported: web'
         required: true
         type: string
       environment:
@@ -74,8 +74,8 @@ jobs:
 
           app_name=""
           case "${{ inputs.app }}" in
-            "main")
-              app_name="MAIN"
+            "web")
+              app_name="WEB"
               db="db"
               # inngest="${url}/api/inngest"
               ;;
