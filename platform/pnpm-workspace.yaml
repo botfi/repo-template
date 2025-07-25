@@ -3,14 +3,6 @@ packages:
   - 'services/*'
   - 'packages/*'
 
-savePrefix: ''
-storeDir: /pnpm/store
-globalDir: /pnpm/global
-globalBinDir: /pnpm/bin
-stateDir: /pnpm/state
-cacheDir: /pnpm/cache
-# virtualStoreDir: /pnpm/virtual-store # Not compatible with turbopack
-
 publicHoistPattern:
   - '@prisma/client'
   - '.prisma/client'
