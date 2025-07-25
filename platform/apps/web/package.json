@@ -1,5 +1,5 @@
 {
-  "name": "@botfi/main-app",
+  "name": "@botfi/web-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,14 +11,14 @@
     "db:recreate": "pnpm --workspace-root run db:recreate",
     "db:reset": "pnpm --workspace-root run db:reset",
     "db:studio": "pnpm --workspace-root run db:studio",
-    "dev": "next dev --turbopack --port ${DEV_MAIN_PORT:-15000}",
+    "dev": "next dev --turbopack --port ${DEV_WEB_PORT:-15000}",
     "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "format:write": "prettier --write \"**/*.{ts,tsx,md}\"",
     "i18n:parse": "i18next --config config/i18next-parser.ts",
     "lint": "next lint && pnpm typecheck && pnpm format:check",
     "prebuild": "pnpm supergraph:compose",
     "predev": "pnpm supergraph:compose",
-    "start": "next start -p ${DEV_MAIN_PORT:-15000}",
+    "start": "next start -p ${DEV_WEB_PORT:-15000}",
     "supergraph:compose": "pnpm rover supergraph compose --log WARN --elv2-license accept --config ../../services/api/supergraph.yaml --format json --output ./app/api/graphql/supergraph/supergraph.json",
     "test:it": "echo 'vitest --config=config/it.config.ts'",
     "test:unit": "echo 'vitest --config=config/unit.config.ts'",
