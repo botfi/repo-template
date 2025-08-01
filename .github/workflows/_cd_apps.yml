@@ -168,21 +168,21 @@ jobs:
           ls -la .vercel
           cat .vercel/project.json
 
-      # - name: '[${{ inputs.environment }}] Build Project Artifacts'
-      #   if: ${{ env.VERCEL_ENV == 'production' }}
-      #   run: pnpm vercel build --prod --debug
-      #   env:
-      #     APOLLO_ELV2_LICENSE: accept
-      # - name: '[${{ inputs.environment }}] Migrate database'
-      #   if: ${{ env.VERCEL_ENV == 'production' && needs.utils.outputs.db != '' }}
-      #   run: |
-      #     cp ../../.vercel/.env.production.local .env
-      #     pnpm db:deploy
-      #   working-directory: platform/services/db
+      - name: '[${{ inputs.environment }}] Build Project Artifacts'
+        if: ${{ env.VERCEL_ENV == 'production' }}
+        run: pnpm vercel build --prod --debug
+        env:
+          APOLLO_ELV2_LICENSE: accept
+      - name: '[${{ inputs.environment }}] Migrate database'
+        if: ${{ env.VERCEL_ENV == 'production' && needs.utils.outputs.db != '' }}
+        run: |
+          cp ../../.vercel/.env.production.local .env
+          pnpm db:deploy
+        working-directory: platform/services/db
 
-      # - name: '[${{ inputs.environment }}] Deploy Project Artifacts to Vercel'
-      #   if: ${{ env.VERCEL_ENV == 'production' }}
-      #   run: pnpm vercel deploy --debug --prebuilt --prod --token=${VERCEL_TOKEN}
+      - name: '[${{ inputs.environment }}] Deploy Project Artifacts to Vercel'
+        if: ${{ env.VERCEL_ENV == 'production' }}
+        run: pnpm vercel deploy --debug --prebuilt --prod --token=${VERCEL_TOKEN}
 
       - name: '[${{ inputs.environment }}] Manual sync the app to Inngest'
         if: ${{ needs.utils.outputs.inngest != '' }}
