@@ -25,6 +25,16 @@ export type Mutation = {
 
 export type Query = {
   __typename?: 'Query'
+  healthcheck: Scalars['Boolean']['output']
   hello: Scalars['String']['output']
   isLocal: Scalars['Boolean']['output']
+  me: User
+}
+
+export type User = {
+  __typename?: 'User'
+  createdAt: Scalars['DateTime']['output']
+  id: Scalars['ID']['output']
+  name?: Maybe<Scalars['String']['output']>
+  updatedAt: Scalars['DateTime']['output']
 }
