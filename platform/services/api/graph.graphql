@@ -15,6 +15,7 @@ type Mutation {
 type Query {
   me: User!
   hello: String!
+  healthcheck: Boolean!
 }
 
 type User {
