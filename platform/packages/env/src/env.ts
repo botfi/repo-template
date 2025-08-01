@@ -27,7 +27,7 @@ export const env = createEnv({
     NEXT_PUBLIC_ENV: z.enum(['local', 'preview', 'staging', /* 'canary', */ 'production']).default('local'),
     NEXT_PUBLIC_RELEASE_VERSION: z.string().default('debug'),
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
-    NEXT_PUBLIC_URL_WEB: z.string().url().default('http://web.repo-template.botfi.localhost:15000'),
+    NEXT_PUBLIC_URL_WEB: z.string().url().default('http://web-repo-template.botfi.localhost:15000'),
   },
 
   shared: {
@@ -35,7 +35,7 @@ export const env = createEnv({
     NEXT_PUBLIC_ENV: z.enum(['local', 'preview', 'staging', /* 'canary', */ 'production']).default('local'),
     NEXT_PUBLIC_RELEASE_VERSION: z.string().default('debug'),
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
-    NEXT_PUBLIC_URL_WEB: z.string().url().default('http://web.repo-template.botfi.localhost:15000'),
+    NEXT_PUBLIC_URL_WEB: z.string().url().default('http://web-repo-template.botfi.localhost:15000'),
   },
 
   /**

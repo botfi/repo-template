@@ -24,8 +24,12 @@ services:
       - platform-pnpm:/pnpm
       - .devcontainer/.npmrc:/root/.npmrc:ro
       - .:/workspace
+    networks:
+      botfi.localhost:
+        aliases:
+          - web-repo-template.botfi.localhost
     ports:
-      - 15000:15000 # main-app
+      - 15000:15000 # web app
 volumes:
   platform-vscode-server: {}
   platform-pnpm: {}
