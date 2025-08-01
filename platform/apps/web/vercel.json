@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/api/healthcheck",
-      "schedule": "*/5 * * * *"
+      "schedule": "40 14 * * *"
     }
   ]
 }
