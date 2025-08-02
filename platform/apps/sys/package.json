@@ -1,0 +1,35 @@
+{
+  "name": "@botfi/sys-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "build:clean": "rm -rf .next .turbo && pnpm build",
+    "db:studio": "pnpm --workspace-root run db:studio",
+    "dev": "next dev --turbopack --port ${DEV_SYS_PORT:-15999}",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "format:write": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "next lint && pnpm typecheck && pnpm format:check",
+    "start": "next start -p ${DEV_SYS_PORT:-15999}",
+    "test:it": "echo 'vitest --config=config/it.config.ts'",
+    "test:unit": "echo 'vitest --config=config/unit.config.ts'",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@botfi/env": "workspace:*",
+    "@botfi/ui": "workspace:*",
+    "next": "15.4.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "server-only": "0.0.1",
+    "zod": "4.0.5"
+  },
+  "devDependencies": {
+    "@botfi/eslint-config": "workspace:*",
+    "@botfi/tsconfig": "workspace:*",
+    "@types/node": "^22",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "5.8.3"
+  }
+}
