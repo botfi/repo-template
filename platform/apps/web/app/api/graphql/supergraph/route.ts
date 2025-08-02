@@ -3,8 +3,6 @@ import { getApiUrl, X_BOTFI_INTERNAL_API_KEY } from '@botfi/api/utils'
 import { env } from '@botfi/env/web'
 import { NextRequest } from 'next/server'
 
-console.log(createHandler)
-
 import supergraphJSON from './supergraph.json'
 
 const preprocess = async (req: NextRequest) => {
