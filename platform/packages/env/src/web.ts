@@ -12,11 +12,11 @@ export const env = createEnv({
     INTERNAL_API_KEY: z.string().describe('The API key to allow access to the internal API'),
     SUBGRAPH_ENDPOINT__FEDERATED_WEB: z
       .string()
-      .default('http://web.repo-template.botfi.localhost:15000/api/graphql/federated')
+      .default('http://web-repo-template.botfi.localhost:15000/api/graphql/federated')
       .describe('The endpoint of the WEB federated subgraph. It is used to allow other apps to access the federated data.'),
     SUBGRAPH_ENDPOINT__GRAPH_WEB: z
       .string()
-      .default('http://web.repo-template.botfi.localhost:15000/api/graphql/graph')
+      .default('http://web-repo-template.botfi.localhost:15000/api/graphql/graph')
       .describe('The endpoint of the WEB graph subgraph. It is used as the graph endpoint for the WEB app.'),
   },
 
@@ -26,7 +26,7 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    NEXT_PUBLIC_URL: z.string().url().default('http://web.repo-template.botfi.localhost:15000'),
+    NEXT_PUBLIC_URL: z.string().url().default('http://web-repo-template.botfi.localhost:15000'),
     NEXT_PUBLIC_ENV: z.enum(['local', 'preview', 'staging', /* 'canary', */ 'production']).default('local'),
     NEXT_PUBLIC_RELEASE_VERSION: z.string().default('debug'),
   },

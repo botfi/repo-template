@@ -1,3 +1,4 @@
+import { healthCheck } from '@botfi/db/utils'
 import { builder } from '../builder'
 
 /**
@@ -17,6 +18,13 @@ builder.queryType({
       // Skip the default scope for this field
       skipTypeScopes: true,
       resolve: () => 'Hello world!',
+    }),
+    healthcheck: t.boolean({
+      skipTypeScopes: true,
+      resolve: async () => {
+        const result = await healthCheck()
+        return result.status === 'healthy'
+      },
     }),
   }),
 })
