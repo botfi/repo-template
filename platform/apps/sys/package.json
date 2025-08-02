@@ -6,7 +6,7 @@
     "build": "next build",
     "build:clean": "rm -rf .next .turbo && pnpm build",
     "db:studio": "pnpm --workspace-root run db:studio",
-    "dev": "next dev --turbopack --port ${DEV_SYS_PORT:-15999}",
+    "dev": "refine dev --port ${DEV_SYS_PORT:-15999}",
     "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "format:write": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "next lint && pnpm typecheck && pnpm format:check",
@@ -18,6 +18,15 @@
   "dependencies": {
     "@botfi/env": "workspace:*",
     "@botfi/ui": "workspace:*",
+    "@refinedev/cli": "2.16.46",
+    "@refinedev/core": "4.57.10",
+    "@refinedev/kbar": "1.3.16",
+    "@refinedev/nextjs-router": "6.2.3",
+    "@refinedev/react-hook-form": "4.10.2",
+    "@refinedev/react-table": "5.6.17",
+    "@refinedev/supabase": "5.9.8",
+    "@supabase/ssr": "0.6.1",
+    "@tanstack/react-table": "8.21.3",
     "next": "15.4.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
@@ -27,9 +36,13 @@
   "devDependencies": {
     "@botfi/eslint-config": "workspace:*",
     "@botfi/tsconfig": "workspace:*",
+    "@refinedev/devtools": "1.2.16",
     "@types/node": "^22",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "typescript": "5.8.3"
+  },
+  "refine": {
+    "projectId": "edC8zY-tFxNzN-rcX9rO"
   }
 }

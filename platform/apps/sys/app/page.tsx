@@ -1,14 +1,15 @@
-import { env } from '@botfi/env'
-import { Button } from '@botfi/ui/lib/button'
+'use client'
 
-export default async function Page() {
+import { Authenticated } from '@refinedev/core'
+import { NavigateToResource } from '@refinedev/nextjs-router'
+import { Suspense } from 'react'
+
+export default function IndexPage() {
   return (
-    <div className="flex min-h-svh items-center justify-center">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-bold">Hello</h1>
-        <Button size="sm">Button</Button>
-        <em>{env.NEXT_PUBLIC_ENV}</em>
-      </div>
-    </div>
+    <Suspense>
+      <Authenticated key="home-page">
+        <NavigateToResource />
+      </Authenticated>
+    </Suspense>
   )
 }

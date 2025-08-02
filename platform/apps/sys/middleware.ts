@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+
+import { updateSession } from './lib/sb/middleware'
 
 export default async function middleware(_req: NextRequest) {
-  return NextResponse.next()
+  return updateSession(_req)
 }
 
 export const config = {
