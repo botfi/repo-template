@@ -4,8 +4,9 @@
     "baseUrl": ".",
     "paths": {
       "@/app/*": ["./app/*"],
+      "@/components": ["./components"],
       "@/components/*": ["./components/*"],
-      "@/hooks/*": ["./hooks/*"],
+      "@/hooks": ["./hooks"],
       "@/lib/*": ["./lib/*"],
       "@/providers/*": ["./providers/*"]
     },
