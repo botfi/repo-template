@@ -55,7 +55,7 @@ export const Sidebar = ({ isCollapsed }: NavProps) => {
                   <NextLink
                     key={key}
                     href={item.list?.toString() ?? '/#'}
-                    title={item.meta?.title ?? item.name}
+                    title={item.meta?.label ?? item.name}
                     className={cn(
                       buttonVariants({
                         variant: 'ghost',
@@ -68,7 +68,7 @@ export const Sidebar = ({ isCollapsed }: NavProps) => {
                   >
                     {item.meta?.icon}
                     <span className="sr-only">
-                      {item.meta?.title ?? item.label} {item.list ? 'List' : 'Create'}
+                      {item.meta?.label ?? item.label} {item.list ? 'List' : 'Create'}
                     </span>
                   </NextLink>
                 </TooltipTrigger>
@@ -93,7 +93,7 @@ export const Sidebar = ({ isCollapsed }: NavProps) => {
                 )}
               >
                 {GetIcon(item)}
-                {item.meta?.title ?? item.name}
+                {item.meta?.label ?? item.name}
               </NextLink>
             )
           })}

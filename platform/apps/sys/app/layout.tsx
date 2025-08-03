@@ -1,19 +1,13 @@
 import './global.css'
 
-import { env } from '@botfi/env/sys'
-import { Refine } from '@refinedev/core'
-import { RefineKbar, RefineKbarProvider } from '@refinedev/kbar'
-import routerProvider from '@refinedev/nextjs-router'
-import dynamic from 'next/dynamic'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { cookies } from 'next/headers'
 import React, { Suspense } from 'react'
 
-import { authProviderClient } from '@/providers/AuthProvider/ssr'
-import { dataProvider } from '@/providers/DataProvider'
-import { DevtoolsProvider } from '@/providers/Devtools'
-import { cookies } from 'next/headers'
+import { AppLayout } from './_components/AppLayout'
 
-const DefaultLayout = dynamic(() => import('@/components/layouts').then((mod) => mod.DefaultLayout), { ssr: !!!false })
+// import dynamic from 'next/dynamic'
+// const AppLayout = dynamic(() => import('./_components/AppLayout').then((mod) => mod.AppLayout), { ssr: !!!false })
 
 const fontSans = Geist({
   subsets: ['latin'],
@@ -39,37 +33,10 @@ export default async function RootLayout({
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}>
-        <Suspense>
-          <RefineKbarProvider>
-            <DevtoolsProvider>
-              <Refine
-                routerProvider={routerProvider}
-                authProvider={authProviderClient}
-                dataProvider={dataProvider}
-                resources={[
-                  {
-                    name: 'users',
-                    list: '/users',
-                    create: '/users/create',
-                    meta: {
-                      canDelete: false,
-                    },
-                  },
-                ]}
-                options={{
-                  syncWithLocation: true,
-                  warnWhenUnsavedChanges: true,
-                  useNewQueryKeys: true,
-                  projectId: env.NEXT_PUBLIC_REFINE_PROJECT_ID,
-                }}
-              >
-                <DefaultLayout navCollapsedSize={5} defaultCollapsed={defaultCollapsed} defaultLayout={defaultLayout}>
-                  {children}
-                </DefaultLayout>
-                <RefineKbar />
-              </Refine>
-            </DevtoolsProvider>
-          </RefineKbarProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+          <AppLayout defaultCollapsed={defaultCollapsed} defaultLayout={defaultLayout}>
+            {children}
+          </AppLayout>
         </Suspense>
       </body>
     </html>

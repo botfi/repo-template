@@ -3,9 +3,11 @@
 ## How-Tos
 
 ### Use Supabase
+
 #### Authentication
 
 At `https://supabase.com/dashboard/project/<your-project-id>/auth/users`
+
 - Enable `Email` provider
 - (Optional) disable `Allow new users to sign up`
 - Create admin user with email/password

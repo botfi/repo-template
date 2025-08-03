@@ -1,14 +1,12 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-
 import { useIsMobile } from '@botfi/ui/hooks/use-mobile'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@botfi/ui/lib/resizable'
 import { cn } from '@botfi/ui/utils'
 import { useResource } from '@refinedev/core'
-import { HomeIcon } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { ReactElement, ReactNode, useMemo, useState } from 'react'
+import { ComponentProps, isValidElement, ReactElement, ReactNode, useMemo, useState } from 'react'
 
 import { BaseLayout } from './BaseLayout'
 import { Sidebar } from './Sidebar'
@@ -17,7 +15,9 @@ const ModeToggle = dynamic(() => import('@botfi/ui/components/ModeToggle').then(
   ssr: false,
 })
 
-interface DefaultLayoutProps extends React.PropsWithChildren<{}> {
+export type LogoType = ReactElement<ComponentProps<'img'>> | ReactNode
+
+export interface DefaultLayoutProps extends React.PropsWithChildren<{}> {
   navCollapsedSize: number
   navbar?: {
     leftSide: React.ReactNode
@@ -26,27 +26,50 @@ interface DefaultLayoutProps extends React.PropsWithChildren<{}> {
   footer?: ReactElement | ReactNode
   defaultCollapsed?: boolean
   defaultLayout?: number[]
+  logo?: {
+    collapsed: LogoType
+    default: LogoType
+  }
 }
 
-export const DefaultLayout = ({ children, navCollapsedSize, navbar, footer, defaultCollapsed, defaultLayout }: DefaultLayoutProps) => {
+export const DefaultLayout = ({
+  children,
+  navCollapsedSize,
+  navbar,
+  footer,
+  defaultCollapsed,
+  defaultLayout,
+  logo,
+}: DefaultLayoutProps) => {
   const { resources } = useResource()
-  const isMobile = useIsMobile()
-
   const firstDashboard = resources?.[0]
+
+  const isMobile = useIsMobile()
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(isMobile ?? defaultCollapsed ?? false)
 
   const layout = useMemo(() => {
     if (defaultLayout) return defaultLayout
-    return isMobile ? [15, 85] : [25, 75]
+    return isMobile ? [15, 85] : [5, 95]
   }, [isMobile, defaultLayout])
 
   const SidebarSizes = useMemo(
-    () => (isMobile ? { minSize: 15, maxSize: 15 } : { minSize: 11, maxSize: 25 }),
+    () => (isMobile ? { minSize: 15, maxSize: 65 } : { minSize: 5, maxSize: 25 }),
     [isMobile],
   )
 
   const hasCollapsed = useMemo(() => isCollapsed || isMobile, [isCollapsed, isMobile])
+
+  const Logo: LogoType | undefined = useMemo<LogoType | undefined>((): LogoType | undefined => {
+    if (!logo) return null
+
+    if (!hasCollapsed && isValidElement(logo.default)) return logo.default
+
+    const component = hasCollapsed ? logo.collapsed : logo.default
+    if (isValidElement(component)) return component
+
+    return null
+  }, [logo, defaultLayout, hasCollapsed])
 
   return (
     <BaseLayout>
@@ -81,19 +104,13 @@ export const DefaultLayout = ({ children, navCollapsedSize, navbar, footer, defa
               hasCollapsed && 'px-2',
             )}
           >
-            {firstDashboard ? (
-              <Link
-                href={firstDashboard.list?.toString() ?? '/'}
-                className="inline-flex items-center justify-center"
-                title={firstDashboard.meta?.label ?? firstDashboard.name}
-              >
-                <HomeIcon className="h-4 w-4" />
-              </Link>
-            ) : (
-              <Link href="/" className="inline-flex items-center justify-center" title="Dashboard">
-                <HomeIcon className="h-4 w-4" />
-              </Link>
-            )}
+            <Link
+              href={firstDashboard?.list?.toString() ?? '/'}
+              className="inline-flex items-center justify-center"
+              title={firstDashboard?.meta?.label ?? firstDashboard?.name}
+            >
+              {Logo}
+            </Link>
           </div>
           <Sidebar isCollapsed={hasCollapsed} />
         </ResizablePanel>

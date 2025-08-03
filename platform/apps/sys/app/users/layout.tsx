@@ -1,4 +1,3 @@
-import { AppLayout } from '@/app/_components/AppLayout'
 import { authProviderServer } from '@/providers/AuthProvider/rsc'
 import { redirect } from 'next/navigation'
 import React from 'react'
@@ -10,7 +9,7 @@ export default async function Layout({ children }: React.PropsWithChildren) {
     return redirect(data?.redirectTo || '/login')
   }
 
-  return <AppLayout>{children}</AppLayout>
+  return <>{children}</>
 }
 
 async function getData() {
