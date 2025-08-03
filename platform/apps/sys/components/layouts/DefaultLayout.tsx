@@ -3,9 +3,8 @@
 import { useIsMobile } from '@botfi/ui/hooks/use-mobile'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@botfi/ui/lib/resizable'
 import { cn } from '@botfi/ui/utils'
-import { useResource } from '@refinedev/core'
+import { Link, useResource } from '@refinedev/core'
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
 import { ComponentProps, isValidElement, ReactElement, ReactNode, useMemo, useState } from 'react'
 
 import { BaseLayout } from './BaseLayout'
@@ -105,7 +104,7 @@ export const DefaultLayout = ({
             )}
           >
             <Link
-              href={firstDashboard?.list?.toString() ?? '/'}
+              to={firstDashboard?.list?.toString() ?? '/'}
               className="inline-flex items-center justify-center"
               title={firstDashboard?.meta?.label ?? firstDashboard?.name}
             >

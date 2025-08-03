@@ -3,8 +3,7 @@
 import { buttonVariants } from '@botfi/ui/lib/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@botfi/ui/lib/tooltip'
 import { cn } from '@botfi/ui/utils'
-import { useMenu, useResourceParams } from '@refinedev/core'
-import NextLink from 'next/link'
+import { Link, useMenu, useResourceParams } from '@refinedev/core'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
@@ -52,9 +51,9 @@ export const Sidebar = ({ isCollapsed }: NavProps) => {
             return isCollapsed ? (
               <Tooltip key={key} delayDuration={0}>
                 <TooltipTrigger asChild>
-                  <NextLink
+                  <Link
                     key={key}
-                    href={item.list?.toString() ?? '/#'}
+                    to={item.list?.toString() ?? '/#'}
                     title={item.meta?.label ?? item.name}
                     className={cn(
                       buttonVariants({
@@ -70,7 +69,7 @@ export const Sidebar = ({ isCollapsed }: NavProps) => {
                     <span className="sr-only">
                       {item.meta?.label ?? item.label} {item.list ? 'List' : 'Create'}
                     </span>
-                  </NextLink>
+                  </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right" className="flex items-center gap-4">
                   {item.label}
@@ -78,9 +77,9 @@ export const Sidebar = ({ isCollapsed }: NavProps) => {
                 </TooltipContent>
               </Tooltip>
             ) : (
-              <NextLink
+              <Link
                 key={key}
-                href={item.list?.toString() ?? '/#'}
+                to={item.list?.toString() ?? '/#'}
                 title={item.meta?.title ?? item.name}
                 className={cn(
                   buttonVariants({
@@ -94,7 +93,7 @@ export const Sidebar = ({ isCollapsed }: NavProps) => {
               >
                 {GetIcon(item)}
                 {item.meta?.label ?? item.name}
-              </NextLink>
+              </Link>
             )
           })}
       </nav>

@@ -1,7 +1,6 @@
 'use client'
 
-import { useBreadcrumb } from '@refinedev/core'
-import Link from 'next/link'
+import { useBreadcrumb, Link } from '@refinedev/core'
 
 export const Breadcrumb = () => {
   const { breadcrumbs } = useBreadcrumb()
@@ -11,7 +10,7 @@ export const Breadcrumb = () => {
       {breadcrumbs.map((breadcrumb) => {
         return (
           <li key={`breadcrumb-${breadcrumb.label}`}>
-            {breadcrumb.href ? <Link href={breadcrumb.href}>{breadcrumb.label}</Link> : <span>{breadcrumb.label}</span>}
+            {breadcrumb.href ? <Link to={breadcrumb.href}>{breadcrumb.label}</Link> : <span>{breadcrumb.label}</span>}
           </li>
         )
       })}
