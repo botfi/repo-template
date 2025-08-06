@@ -28,8 +28,11 @@ services:
       botfi.localhost:
         aliases:
           - web-repo-template.botfi.localhost
+          - sys-repo-template.botfi.localhost
     ports:
       - 15000:15000 # web app
+      - 15990:15990 # sys app devtools
+      - 15999:15999 # sys app
 volumes:
   platform-vscode-server: {}
   platform-pnpm: {}

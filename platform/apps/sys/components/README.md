@@ -1,0 +1,1 @@
+Most of the implementation in this folder was adapted from [_@ferdiunal/refine-shadcn_](https://github.com/ferdiunal/refine-shadcn), with customizations to simplify and better integrate with our monorepo structure. We appreciate the original author's work that served as inspiration for this implementation.

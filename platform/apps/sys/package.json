@@ -1,0 +1,52 @@
+{
+  "name": "@botfi/sys-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "build:clean": "rm -rf .next .turbo && pnpm build",
+    "db:studio": "pnpm --workspace-root run db:studio",
+    "dev": "refine dev --port ${DEV_SYS_PORT:-15999} --devtools=false",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "format:write": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "next lint && pnpm typecheck && pnpm format:check",
+    "start": "next start -p ${DEV_SYS_PORT:-15999}",
+    "test:it": "echo 'vitest --config=config/it.config.ts'",
+    "test:unit": "echo 'vitest --config=config/unit.config.ts'",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@botfi/env": "workspace:*",
+    "@botfi/ui": "workspace:*",
+    "@radix-ui/react-slot": "1.2.3",
+    "@refinedev/cli": "2.16.46",
+    "@refinedev/core": "4.57.10",
+    "@refinedev/kbar": "1.3.16",
+    "@refinedev/nextjs-router": "6.2.3",
+    "@refinedev/react-hook-form": "4.10.2",
+    "@refinedev/react-table": "5.6.17",
+    "@refinedev/supabase": "5.9.8",
+    "@supabase/ssr": "0.6.1",
+    "@tanstack/react-table": "8.21.3",
+    "lucide-react": "0.525.0",
+    "next": "15.4.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-use": "17.6.0",
+    "server-only": "0.0.1",
+    "zod": "4.0.5"
+  },
+  "devDependencies": {
+    "@botfi/eslint-config": "workspace:*",
+    "@botfi/tsconfig": "workspace:*",
+    "@refinedev/devtools": "1.2.16",
+    "@refinedev/ui-types": "1.24.2",
+    "@types/node": "^22",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "5.8.3"
+  },
+  "refine": {
+    "projectId": "edC8zY-tFxNzN-rcX9rO"
+  }
+}
