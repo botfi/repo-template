@@ -1,4 +1,4 @@
-import '@botfi/ui/globals.css'
+import './globals.css'
 
 import { UIProvider } from '@botfi/ui/components/providers/UIProvider'
 import { dir } from 'i18next'
