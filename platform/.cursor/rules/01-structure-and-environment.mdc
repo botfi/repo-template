@@ -31,19 +31,19 @@ Do not introduce imports that violate these boundaries. All imports are via the 
 
 ## Package manager
 
-- **pmpm** is the package manager for this monorepo.
+- **pnpm** is the package manager for this monorepo.
 - Prefer running commands from the target package directory.
 - Examples:
-  - Install deps in an app: `cd apps/<app-name> && pmpm install`
-  - Run dev server: `cd apps/<app-name> && pmpm dev`
-  - Build a service: `cd services/<service-name> && pmpm build`
-  - Use filters from the root when needed: `pmpm --filter <package-name> run build`
+  - Install deps in an app: `cd apps/<app-name> && pnpm install`
+  - Run dev server: `cd apps/<app-name> && pnpm dev`
+  - Build a service: `cd services/<service-name> && pnpm build`
+  - Use filters from the root when needed: `pnpm --filter <package-name> run build`
 
 ## Running applications
 
 - Always `cd` into the specific app directory before running it.
 - Common commands (run inside the app folder):
-  - `pmpm dev` for development
-  - `pmpm start` for production start
-  - `CI=1 pmpm test:unit` for unit testing
-  - `CI=1 pmpm test:it` for integration testing
+  - `pnpm dev` for development
+  - `pnpm start` for production start
+  - `CI=1 pnpm test:unit` for unit testing
+  - `CI=1 pnpm test:it` for integration testing

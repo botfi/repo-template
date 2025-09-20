@@ -78,13 +78,13 @@ import { cn } from '@botfi/ui/utils'
 ```
 ### Testing conventions
 
-- Unit tests: `*.test.ts` use mocked databases; run with `CI=1 pmpm test:unit` inside the target package.
-- Integration tests: `*.spec.ts` use the real database; run with `CI=1 pmpm test:it` inside the target package.
-- Always run tests from the corresponding package directory, or from the repo root using filters: `CI=1 pmpm --filter <package-name> run test:unit`.
+- Unit tests: `*.test.ts` use mocked databases; run with `CI=1 pnpm test:unit` inside the target package.
+- Integration tests: `*.spec.ts` use the real database; run with `CI=1 pnpm test:it` inside the target package.
+- Always run tests from the corresponding package directory, or from the repo root using filters: `CI=1 pnpm --filter <package-name> run test:unit`.
 
 ### Agent execution rules
 
 - Always change directory into the target package (`apps/<app>` or `services/<service>`) before running scripts.
 - Always prepend the `CI=1` before running commands.
-- Use `pmpm` only (do not use `npm` or `yarn`).
-- For cross-package scripting from the root, use filters: `pmpm --filter <package> run <script>`.
+- Use `pnpm` only (do not use `npm` or `yarn`).
+- For cross-package scripting from the root, use filters: `pnpm --filter <package> run <script>`.
