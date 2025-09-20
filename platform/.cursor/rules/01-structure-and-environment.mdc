@@ -1,0 +1,49 @@
+---
+description: Monorepo layout, import boundaries, package manager (pnpm), and how agents should run/build/test
+alwaysApply: false
+---
+## Project structure
+
+- **Monorepo**: The repository is a single workspace containing multiple packages.
+- **Namespaces**:
+  - `apps/`: runnable applications (web servers, CLIs, workers, etc.).
+  - `services/`: domain-specific logic and service modules, typically consumed by apps.
+  - `packages/`: generic, reusable libraries with no domain/app coupling.
+
+### Application structure
+
+- `app/`: route pages and page-scoped components
+  - `app/<route>/page.tsx`: page file for the route `<route>`
+  - `app/<route>/_components/`: components scoped to that page/route only
+- App-specific logic folders:
+  - `config/`: runtime/environment configuration and app-wide settings
+  - `hooks/`: shared React hooks used across pages/components
+  - `lib/`: utilities, clients, and helpers (not page-specific)
+  - `types/`: shared TypeScript types and interfaces
+
+## Import boundaries
+
+- **apps**: can import from `services` and `packages`.
+- **services**: can import from other `services` and `packages`.
+- **packages**: can import only from other `packages`.
+
+Do not introduce imports that violate these boundaries. All imports are via the `@botfi/*` scope; app packages end with `-app`.
+
+## Package manager
+
+- **pnpm** is the package manager for this monorepo.
+- Prefer running commands from the target package directory.
+- Examples:
+  - Install deps in an app: `cd apps/<app-name> && pnpm install`
+  - Run dev server: `cd apps/<app-name> && pnpm dev`
+  - Build a service: `cd services/<service-name> && pnpm build`
+  - Use filters from the root when needed: `pnpm --filter <package-name> run build`
+
+## Running applications
+
+- Always `cd` into the specific app directory before running it.
+- Common commands (run inside the app folder):
+  - `pnpm dev` for development
+  - `pnpm start` for production start
+  - `CI=1 pnpm test:unit` for unit testing
+  - `CI=1 pnpm test:it` for integration testing

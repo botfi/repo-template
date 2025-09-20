@@ -9,12 +9,14 @@
     "vscode": {
       "extensions": [
         "esbenp.prettier-vscode",
-        "joelday.docthis",
-        "MS-vsliveshare.vsliveshare",
         "Prisma.prisma",
-        "johnpapa.vscode-peacock"
+        "johnpapa.vscode-peacock",
+        "openai.chatgpt"
       ],
-      "recommendations": [],
+      "recommendations": [
+        "joelday.docthis",
+        "MS-vsliveshare.vsliveshare"
+      ],
       "settings": {
         "editor.autoIndent": "advanced",
         "editor.links": true,
