@@ -1,0 +1,90 @@
+---
+description: Conventions and development guidelines for agents: naming/exports, import scope, route segments, environment, database, UI, testing, and execution
+alwaysApply: false
+---
+
+## Convention
+### Application structure
+
+- `app/`: route pages and page-scoped components
+  - `app/<route>/page.tsx`: page file for the route `<route>`
+  - `app/<route>/_components/`: components scoped to that page/route only
+- App-specific logic folders:
+  - `config/`: runtime/environment configuration and app-wide settings
+  - `hooks/`: shared React hooks used across pages/components
+  - `lib/`: utilities, clients, and helpers (not page-specific)
+  - `types/`: shared TypeScript types and interfaces
+
+### Import scope and examples
+
+- Use scoped imports: `@botfi/<package>`.
+- Do not import apps anywhere. Packages can import only other packages.
+
+```ts
+// ALLOWED
+// apps → services/packages
+import { sendEmail } from '@botfi/notifications'
+// services → services/packages
+import { db } from '@botfi/db'
+import { env } from '@botfi/env/admin'
+// packages → packages
+import { logger } from '@botfi/logger'
+
+// DISALLOWED
+// anywhere → apps
+import { constants } from '@botfi/admin-app'
+// packages → services
+import { handler } from '@botfi/api-admin'
+```
+
+### Route segment imports
+
+- In `app/` routes, import from your segment or any ancestor segments; never from descendant segments.
+- Example: `app/admin/users/page.tsx` can import from `app/admin/_components/*`. `app/admin/page.tsx` must not import from `app/admin/users/_components/*`.
+
+## Development
+### Naming convention
+- **Component files**: PascalCase. The primary named export matches the file name.
+  - For multiple internal components, prefer `ComponentName/index.ts(x)` and export only what is needed.
+- **Other modules** (utils, hooks, libs, stores, etc.): `camelCase` file names with named exports matching file names when practical.
+
+### Environment
+
+- Import the per-app env: `@botfi/env/<app-name>` (one env module per app).
+- Follow Next.js rules: only `NEXT_PUBLIC_*` variables are available on the client; others are server-only.
+- Prefer `env.NEXT_PUBLIC_ENV` over `NODE_ENV` for environment checks (values: `local`, `staging`, `production`).
+- Do not access or destructure `process.env` directly; always use the app's `env` export.
+```ts
+import { env } from '@botfi/env/web'
+
+if (env.NEXT_PUBLIC_ENV === 'local') {
+  console.log('Debug log')
+}
+```
+
+### Database
+
+- Import database utilities from `@botfi/db` using its namespaces (e.g., `utils`, `models`, `schemas`).
+- Use the exported `prisma` instance from the `@botfi/db` entrypoint (singleton) for database access.
+
+### UI
+
+- Use the UI kit from `@botfi/ui` (built on shadcn/ui).
+- Namespace `@botfi/ui/lib` contains the original shadcn/ui components.
+- Namespaces `@botfi/ui/components`, `@botfi/ui/hooks`, and `@botfi/ui/kit` contain custom shared building blocks across apps.
+- Use the `cn` utility from `@botfi/ui/utils`.
+```ts
+import { cn } from '@botfi/ui/utils'
+```
+### Testing conventions
+
+- Unit tests: `*.test.ts` use mocked databases; run with `CI=1 pmpm test:unit` inside the target package.
+- Integration tests: `*.spec.ts` use the real database; run with `CI=1 pmpm test:it` inside the target package.
+- Always run tests from the corresponding package directory, or from the repo root using filters: `CI=1 pmpm --filter <package-name> run test:unit`.
+
+### Agent execution rules
+
+- Always change directory into the target package (`apps/<app>` or `services/<service>`) before running scripts.
+- Always prepend the `CI=1` before running commands.
+- Use `pmpm` only (do not use `npm` or `yarn`).
+- For cross-package scripting from the root, use filters: `pmpm --filter <package> run <script>`.
