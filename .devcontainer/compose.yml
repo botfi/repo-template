@@ -6,15 +6,13 @@ x-base: &base
   volumes: &base_volumes
     - .devcontainer/.npmrc:/root/.npmrc:ro
     - .:/workspace
-x-node: &node
-  <<: *base
   build:
     context: .
-    dockerfile: .devcontainer/Dockerfile.node22
+    dockerfile: .devcontainer/Dockerfile
 
 services:
   platform:
-    <<: *node
+    <<: *base
     container_name: repo-template.botfi.localhost
     hostname: repo-template.botfi.localhost
     working_dir: /workspace/platform
