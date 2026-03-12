@@ -2,7 +2,7 @@
   "name": "@botfi/repo-template.botfi.localhost",
   "dockerComposeFile": ["../compose.yml", "../.devcontainer/compose.yml"],
   "service": "platform",
-  "runServices": ["platform", "pgsql"],
+  "runServices": ["platform"],
   "workspaceFolder": "/workspace/platform",
   "shutdownAction": "stopCompose",
   "customizations": {
@@ -11,7 +11,8 @@
         "esbenp.prettier-vscode",
         "Prisma.prisma",
         "johnpapa.vscode-peacock",
-        "openai.chatgpt"
+        "openai.chatgpt",
+        "databricks.neon-local-connect"
       ],
       "recommendations": [
         "joelday.docthis",

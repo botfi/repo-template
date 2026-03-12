@@ -5,7 +5,6 @@ generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
   binaryTargets   = ["native", "rhel-openssl-3.0.x"]
-  // output          = "./client"
 }
 
 generator pothos {
@@ -35,8 +34,6 @@ generator zod {
 
 datasource db {
   provider   = "postgresql"
-  url        = env("DB_URL")
-  directUrl  = env("DB_DIRECT_URL")
   extensions = [pgcrypto(schema: "extensions"), uuid_ossp(map: "uuid-ossp", schema: "extensions")]
 }
 
