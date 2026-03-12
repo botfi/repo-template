@@ -380,6 +380,9 @@ importers:
       '@prisma/client':
         specifier: 7.5.0
         version: 7.5.0(prisma@7.5.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3)
+      zod:
+        specifier: 4.3.6
+        version: 4.3.6
     devDependencies:
       '@botfi/tsconfig':
         specifier: workspace:*
@@ -408,9 +411,6 @@ importers:
       vitest:
         specifier: 4.0.18
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.4.0)(jiti@2.6.1)(lightningcss@1.31.1)(msw@2.12.10(@types/node@25.4.0)(typescript@5.9.3))(tsx@4.21.0)(yaml@2.8.2)
-      zod:
-        specifier: 4.3.6
-        version: 4.3.6
       zod-prisma-types:
         specifier: 3.3.11
         version: 3.3.11(@prisma/client@7.5.0(prisma@7.5.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3))(prisma@7.5.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(zod@4.3.6)
