@@ -6,10 +6,10 @@
   "scripts": {
     "db:deploy": "prisma migrate deploy",
     "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev --skip-seed",
-    "db:recreate": "prisma migrate reset --force --skip-seed --skip-generate",
+    "db:migrate": "prisma migrate dev",
+    "db:recreate": "prisma migrate reset --force",
     "db:reset": "pnpm db:recreate && pnpm db:seed",
-    "db:seed": "tsx ./seeds/development.ts",
+    "db:seed": "prisma db seed",
     "db:studio": "prisma studio --browser none",
     "format:check": "prettier --check \"{src,seeds,spec}/**/*.{ts,tsx,mdx}\" --cache",
     "format:write": "prettier --write \"{src,seeds,spec}/**/*.{ts,tsx,mdx}\" --cache",
@@ -46,19 +46,20 @@
   },
   "dependencies": {
     "@botfi/env": "workspace:*",
-    "@prisma/client": "6.12.0"
+    "@prisma/adapter-neon": "7.5.0",
+    "@prisma/client": "7.5.0"
   },
   "devDependencies": {
     "@botfi/tsconfig": "workspace:*",
-    "@faker-js/faker": "9.9.0",
-    "@pothos/plugin-prisma": "4.10.0",
-    "@types/node": "^22",
-    "prisma": "6.12.0",
-    "tsx": "4.20.3",
-    "typescript": "5.8.3",
-    "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.2.4",
-    "zod": "4.0.5",
-    "zod-prisma-types": "3.2.4"
+    "@faker-js/faker": "10.3.0",
+    "@pothos/plugin-prisma": "4.14.2",
+    "@types/node": "^25.4.0",
+    "prisma": "7.5.0",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3",
+    "vite-tsconfig-paths": "6.1.1",
+    "vitest": "4.0.18",
+    "zod": "4.3.6",
+    "zod-prisma-types": "3.3.11"
   }
 }
