@@ -21,9 +21,9 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode
-  params: Promise<{ lang: Language }>
+  params: Promise<{ lang: string }>
 }>) {
-  const lang = (await params).lang
+  const lang = (await params).lang as Language
 
   return (
     <html lang={lang} dir={dir(lang)} suppressHydrationWarning>

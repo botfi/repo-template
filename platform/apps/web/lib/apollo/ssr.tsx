@@ -7,7 +7,6 @@ import { getApiUrl } from '@botfi/api/utils'
 import * as React from 'react'
 
 import { cacheConfig } from './cache'
-import { typeDefs } from './typeDefs'
 
 if (process.env.NODE_ENV === 'development') {
   loadDevMessages()
@@ -27,8 +26,6 @@ const makeClientFactory = () => () => {
       typeof window === 'undefined'
         ? ApolloLink.from([new SSRMultipartLink({ stripDefer: true }), httpLink])
         : ApolloLink.from([httpLink]),
-    credentials: 'same-origin',
-    typeDefs,
   })
 }
 
@@ -37,12 +34,12 @@ export function ApolloWrapper({ children }: React.PropsWithChildren) {
   return <ApolloNextAppProvider makeClient={makeClient}>{children}</ApolloNextAppProvider>
 }
 
+export { gql } from '@apollo/client'
 export {
-  gql,
   useBackgroundQuery,
   useFragment,
   useMutation,
   useQuery,
   useReadQuery,
   useSuspenseQuery,
-} from '@apollo/client'
+} from '@apollo/client/react'

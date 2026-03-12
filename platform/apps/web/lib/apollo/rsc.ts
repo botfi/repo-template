@@ -6,7 +6,6 @@ import { env } from '@botfi/env/web'
 import { cookies } from 'next/headers'
 
 import { cacheConfig } from './cache'
-import { typeDefs } from './typeDefs'
 
 export const { getClient, query, PreloadQuery } = registerApolloClient(async () => {
   const cookieStore = await cookies()
@@ -30,7 +29,6 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(async () 
   return new ApolloClient({
     cache: new InMemoryCache(cacheConfig),
     link: contextLink.concat(httpLink),
-    typeDefs,
   })
 })
 
