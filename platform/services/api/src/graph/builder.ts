@@ -1,5 +1,6 @@
 import { prisma } from '@botfi/db'
 import type PrismaTypes from '@botfi/db/graphql'
+import { getDatamodel } from '@botfi/db/graphql'
 import { env } from '@botfi/env/web'
 import SchemaBuilder from '@pothos/core'
 import DirectivePlugin from '@pothos/plugin-directives'
@@ -55,13 +56,8 @@ const builder = new SchemaBuilder<{
   },
   prisma: {
     client: prisma,
-    // defaults to false, uses /// comments from prisma schema as descriptions
-    // for object types, relations and exposed fields.
-    // descriptions can be omitted by setting description to false
-    // exposeDescriptions: boolean | { models: boolean, fields: boolean },
-    // use where clause from prismaRelatedConnection for totalCount (will true by default in next major version)
+    dmmf: getDatamodel(),
     filterConnectionTotalCount: true,
-    // warn when not using a query parameter correctly
     onUnusedQuery: env.NODE_ENV === 'production' ? null : 'warn',
   },
   defaultFieldNullability: false,
