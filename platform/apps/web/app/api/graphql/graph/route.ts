@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const preprocess = async (_req: NextRequest) => {
-  const userSub = 'user-sub-123'
+  const userSub = 'user_alice_001'
 
   return userSub
 }
