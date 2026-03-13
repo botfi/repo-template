@@ -28,7 +28,7 @@ permissions:
 
 jobs:
   diff:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: contains(github.event.pull_request.labels.*.name, 'Status:Draft') == false
     outputs:
       merged-to-main: ${{ steps.check.outputs.merged-to-main }}

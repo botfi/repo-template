@@ -14,11 +14,11 @@ on:
 
 jobs:
   lint-and-tests:
-    runs-on: ubuntu-22.04
-    container: 'node:22'
+    runs-on: ubuntu-24.04
+    container: 'node:24'
     services:
       pgsql.botfi.localhost:
-        image: 'postgres:17'
+        image: 'postgres:18'
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: secret
@@ -38,12 +38,12 @@ jobs:
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
-          version: 10.13.1
+          version: 10.32.1
           run_install: false
-      - name: Use Node.js 22
+      - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: ${{ inputs.cache && 'pnpm' || '' }}
           cache-dependency-path: 'platform/pnpm-lock.yaml'
 
