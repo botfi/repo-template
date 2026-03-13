@@ -71,7 +71,19 @@ Populate the template fields:
 - **Proposed Changes**: Summarize changes based on the commit log and diff. Check off completed items. Keep it concise.
 - **Demo**: Leave blank unless the user provides screenshots/recordings.
 
-### Step 6: Create the PR
+### Step 6: Preview and confirm
+
+Present the full PR draft to the user before creating:
+- **Title**
+- **Base branch**
+- **Body** (the filled template)
+
+Ask: "Does this look good, or do you want to adjust anything?"
+
+If the user wants changes, edit and re-present. Only proceed after
+explicit approval.
+
+### Step 7: Create the PR
 
 ```bash
 # Push branch if not already pushed
@@ -89,6 +101,6 @@ EOF
 
 **Title format**: Follow the repo's commit convention — `type(scope): summary` (e.g., `feat(web): add user profile page`).
 
-### Step 7: Return the PR URL
+### Step 8: Return the PR URL
 
 Print the PR URL so the user can review it.
