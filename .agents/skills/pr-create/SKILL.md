@@ -18,8 +18,10 @@ git rev-parse --abbrev-ref HEAD
 # Check if a PR already exists for this branch
 gh pr view --json url,state 2>/dev/null || true
 
-# List remote branches to find base candidates
-git branch -r --list 'origin/*' | sed 's|origin/||' | xargs -I{} git merge-base --is-ancestor HEAD "origin/{}" 2>/dev/null && echo {}
+# List remote branches whose tip is an ancestor of HEAD
+git branch -r --list 'origin/*' | sed 's|^[[:space:]]*origin/||' | while read -r b; do
+  git merge-base --is-ancestor HEAD "origin/$b" 2>/dev/null && echo "$b"
+done
 ```
 
 ### Step 2: Determine base branch
