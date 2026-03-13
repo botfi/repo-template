@@ -5,7 +5,7 @@ import { z } from 'zod'
 /////////////////////////////////////////
 
 export const AccountSchema = z.object({
-  id: z.string().cuid(),
+  id: z.cuid(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
   userId: z.string(),

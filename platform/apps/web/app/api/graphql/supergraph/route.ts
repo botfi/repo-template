@@ -6,7 +6,7 @@ import { NextRequest } from 'next/server'
 import supergraphJSON from './supergraph.json'
 
 const preprocess = async (req: NextRequest) => {
-  const userSub = 'user-sub-123'
+  const userSub = 'user_bob_002'
 
   if (userSub) {
     req.headers.set(X_BOTFI_INTERNAL_API_KEY, env.INTERNAL_API_KEY)

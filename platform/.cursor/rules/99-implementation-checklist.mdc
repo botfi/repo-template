@@ -1,0 +1,20 @@
+---
+description: Critical workflow checklist for all implementations
+alwaysApply: true
+---
+
+## Implementation Checklist
+
+### Starting ANY work
+1. **Navigate**: Always `cd` into the target package directory
+
+### Before finishing ANY implementation
+1. **Test**: Run `CI=1 pnpm test:unit` (REQUIRED)
+2. **Integration**: Run `CI=1 pnpm test:it` if database-related (RECOMMENDED)
+3. **Typecheck**: Run `pnpm typecheck` (RECOMMENDED)
+4. **Format**: Run `pnpm format:write` (REQUIRED at the very end)
+
+Execute from package directory or use `pnpm --filter <package>` from root.
+
+### Communication
+Keep summaries minimal and actionable. Avoid verbose explanations.

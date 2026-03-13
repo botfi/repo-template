@@ -1,5 +1,5 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
-export const AccountScalarFieldEnumSchema = z.enum(['id', 'createdAt', 'updatedAt', 'userId'])
+export const AccountScalarFieldEnumSchema = z.enum(['id','createdAt','updatedAt','userId']);
 
-export default AccountScalarFieldEnumSchema
+export default AccountScalarFieldEnumSchema;

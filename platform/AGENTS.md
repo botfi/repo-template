@@ -3,6 +3,7 @@
 This is a pnpm + Turborepo monorepo. These guidelines mirror the `.cursor/rules` files for agent consistency. Refer to these documents for topic-specific guidance—each filename and front-matter description summarises the scope:
 - [01-structure-and-environment.mdc](.cursor/rules/01-structure-and-environment.mdc)
 - [02-development.mdc](.cursor/rules/02-development.mdc)
+- [99-implementation-checklist.mdc](.cursor/rules/99-implementation-checklist.mdc)
 
 ## Project Structure & Module Organization
 - `apps/*`: runnable Next.js apps (e.g., `apps/web`, `apps/admin`).

@@ -1,7 +1,17 @@
-import { env } from '@botfi/env'
+import { env } from '@botfi/env/db'
+import { PrismaNeon } from '@prisma/adapter-neon'
+import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '@prisma/client'
+import { parseDbUrl } from './utils/parseDbUrl'
+
+const { isNeonUrl, schema } = parseDbUrl(env.DB_URL)
+
+const adapter = isNeonUrl
+  ? new PrismaNeon({ connectionString: env.DB_URL }, schema ? { schema } : undefined)
+  : new PrismaPg({ connectionString: env.DB_URL }, schema ? { schema } : undefined)
 
 const _prisma = new PrismaClient({
+  adapter,
   log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   errorFormat: env.NODE_ENV === 'development' ? 'pretty' : 'minimal',
 })
