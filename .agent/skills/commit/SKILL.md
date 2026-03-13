@@ -35,22 +35,14 @@ Keep commits small and focused. Run required tests and formatting commands befor
 
 ## Co-Author Attribution
 
-Add co-author attribution **only** when the user explicitly asks for it.
+**Always** include co-author attribution when the agent contributed to the changes being committed.
 
-Explicit requests include phrasing like:
+Do **not** include co-author attribution only when:
 
-- "commit with co-author"
-- "add co-author to the commit"
-- "include AI attribution"
+- The user explicitly asks to exclude it (e.g., "commit without co-author", "no AI attribution")
+- The agent had **no contribution** to the recent changes (e.g., the user wrote the code themselves and only asked the agent to commit it)
 
-Do **not** add co-authors when the user merely says things like:
-
-- "commit this"
-- "make a commit"
-- "/commit"
-- any similar request that does not mention a co-author
-
-When explicitly requested, use the provider-specific attribution:
+Use the provider-specific attribution:
 
 - **Claude Sonnet**: `Co-authored-by: Anthropic AI <ai@botfi.dev>`
 - **GPT**: `Co-authored-by: OpenAI Codex <ai@botfi.dev>`
@@ -59,14 +51,14 @@ When explicitly requested, use the provider-specific attribution:
 
 ## Examples
 
-**Standard commit (no co-author):**
+**Standard commit (agent contributed):**
 
 ```bash
-git commit -m "fix(api-web): guard empty PES payload" -m "Handle empty responses in the PES team list resolver to avoid null dereferences."
+git commit -m "fix(api-web): guard empty PES payload" -m "Handle empty responses in the PES team list resolver to avoid null dereferences." -m "Co-authored-by: Anthropic AI <ai@botfi.dev>"
 ```
 
-**With co-author (only when explicitly requested):**
+**Without co-author (user explicitly opted out, or agent had no contribution):**
 
 ```bash
-git commit -m "feat(web): add leaderboard filter" -m "Introduce segment filtering for the public leaderboard." -m "Co-authored-by: OpenAI Codex <ai@botfi.dev>"
+git commit -m "feat(web): add leaderboard filter" -m "Introduce segment filtering for the public leaderboard."
 ```
