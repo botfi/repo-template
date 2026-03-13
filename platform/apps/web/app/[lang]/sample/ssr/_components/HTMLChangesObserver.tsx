@@ -45,7 +45,7 @@ export function HTMLChangesObserver({ children }: React.PropsWithChildren) {
     }
 
     return (
-      <div className="whitespace-pre-wrap font-mono text-sm">
+      <div className="font-mono text-sm whitespace-pre-wrap">
         {diffParts.map((part, index) => {
           const color =
             part.added === true
@@ -90,7 +90,7 @@ export function HTMLChangesObserver({ children }: React.PropsWithChildren) {
             {diff.length > 0 ? (
               renderDiffAsHTML(diff)
             ) : (
-              <div className="italic text-gray-500">No changes detected yet...</div>
+              <div className="text-gray-500 italic">No changes detected yet...</div>
             )}
           </div>
         </div>
