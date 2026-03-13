@@ -10,8 +10,7 @@ export async function getTranslation(
   ns?: string | string[],
   options?: { keyPrefix?: string; lang?: string },
 ): Promise<{ t: TFunction; i18n: i18n }> {
-  const headerList = await headers()
-  const lang = headerList.get(headerName)
+  const lang = options?.lang ?? (await headers()).get(headerName)
 
   if (lang && i18next.resolvedLanguage !== lang) {
     await i18next.changeLanguage(lang)

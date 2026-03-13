@@ -4,9 +4,17 @@ import { ModeToggle } from '@botfi/ui/components/ModeToggle'
 import { Button } from '@botfi/ui/lib/button'
 
 import { getTranslation } from '@/i18n/server'
+import { languages } from '@/i18n/settings'
 
-export default async function Page() {
-  const { t } = await getTranslation()
+export const revalidate = 3600
+
+export async function generateStaticParams() {
+  return languages.map((lang) => ({ lang }))
+}
+
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const { t } = await getTranslation(undefined, { lang })
   return (
     <div className="flex min-h-svh items-center justify-center">
       <div className="flex flex-col items-center justify-center gap-4">
