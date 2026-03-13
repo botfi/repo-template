@@ -1,17 +1,9 @@
----
-name: issue-refine
-description: >-
-  Investigates, clarifies, or updates a GitHub issue. Use when the user asks
-  to refine, investigate, clarify, spec out, or update an issue, or wants to
-  upload a plan or findings to an issue.
----
-
 # Issue Refine
 
 ## Goal
 
 Improve issue clarity or update it with new information. This skill is
-flexible and user-driven — it responds to what you ask.
+flexible and user-driven -- it responds to what you ask.
 
 ## Common Actions
 

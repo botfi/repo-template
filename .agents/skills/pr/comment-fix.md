@@ -1,13 +1,3 @@
----
-name: pr-comment-fix
-description: >-
-  Read PR review comments and propose or apply fixes. Fetches inline review
-  comments and top-level reviews from a GitHub PR, summarises actionable
-  feedback, then edits the affected files. Use when the user asks to fix PR
-  comments, address review feedback, resolve PR suggestions, or mentions
-  "pr-comment-fix".
----
-
 # PR Comment Fix
 
 ## Goal
@@ -46,8 +36,8 @@ Derive `{owner}/{repo}` from `gh repo view --json nameWithOwner -q .nameWithOwne
 For each inline comment extract:
 - **File path** (`path`) and **line** (`line` / `original_line`)
 - **Author** and whether it is a bot
-- **Severity** — look for P0/P1/P2 badges; otherwise infer from language
-- **Action** — what the reviewer wants changed
+- **Severity** -- look for P0/P1/P2 badges; otherwise infer from language
+- **Action** -- what the reviewer wants changed
 
 Filter out:
 - Boilerplate blocks (e.g. `<details>` "About Codex" sections)
@@ -59,7 +49,7 @@ Filter out:
 Show the user a numbered list:
 
 ```
-## PR #<N> — Review Feedback
+## PR #<N> -- Review Feedback
 
 ### 1. (P1) `path/to/file.ts:42`
 Author: reviewer
@@ -108,6 +98,6 @@ gh api repos/{owner}/{repo}/pulls/<N>/comments/<comment_id>/replies \
 ## Guardrails
 
 - Always confirm with the user before applying changes.
-- Do not fabricate reviewer intent — if a comment is ambiguous, flag it.
+- Do not fabricate reviewer intent -- if a comment is ambiguous, flag it.
 - Skip bot boilerplate and resolved threads automatically.
 - Follow the repo's coding style and commit conventions.

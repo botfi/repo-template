@@ -1,12 +1,3 @@
----
-name: issue-read
-description: >-
-  Reads a GitHub issue and produces a quick context brief with scope, impact
-  areas, risks, and open questions. Use when the user mentions an issue
-  reference like "issue 4", "#4", "read issue", or asks for a quick issue
-  assessment.
----
-
 # Issue Read
 
 ## Goal
@@ -47,7 +38,7 @@ URL: <url>
 - <apps/services/packages paths>
 
 ### Risk level
-- <low|medium|high> — <one-line rationale>
+- <low|medium|high> -- <one-line rationale>
 
 ### Open questions
 - <missing requirements or ambiguities>
