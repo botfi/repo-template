@@ -1,6 +1,6 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 import { registerApolloClient } from '@apollo/client-integration-nextjs'
-import { setContext } from '@apollo/client/link/context'
+import { SetContextLink } from '@apollo/client/link/context'
 import { getApiUrl, X_BOTFI_GRAPHQL_CLIENT_NAME, X_BOTFI_GRAPHQL_CLIENT_VERSION } from '@botfi/api/utils'
 import { env } from '@botfi/env/web'
 import { cookies } from 'next/headers'
@@ -9,19 +9,17 @@ import { cacheConfig } from './cache'
 
 export const { getClient, query, PreloadQuery } = registerApolloClient(async () => {
   const cookieStore = await cookies()
-  const contextLink = setContext((_, { headers }) => {
-    return {
-      headers: {
-        cookie: cookieStore.toString(),
-        [X_BOTFI_GRAPHQL_CLIENT_NAME]: 'web/rsc',
-        [X_BOTFI_GRAPHQL_CLIENT_VERSION]: env.NEXT_PUBLIC_RELEASE_VERSION ?? '',
-        ...headers,
-      },
-    }
-  })
+  const contextLink = new SetContextLink(({ headers }) => ({
+    headers: {
+      cookie: cookieStore.toString(),
+      [X_BOTFI_GRAPHQL_CLIENT_NAME]: 'web/rsc',
+      [X_BOTFI_GRAPHQL_CLIENT_VERSION]: env.NEXT_PUBLIC_RELEASE_VERSION ?? '',
+      ...headers,
+    },
+  }))
 
   const httpLink = new HttpLink({
-    uri: getApiUrl('supergraph'),
+    uri: getApiUrl('graph'),
     credentials: 'same-origin',
     fetchOptions: { cache: 'no-store' },
   })

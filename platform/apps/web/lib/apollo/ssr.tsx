@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const makeClientFactory = () => () => {
   const httpLink = new HttpLink({
-    uri: getApiUrl('supergraph'),
+    uri: getApiUrl('graph'),
     credentials: 'same-origin',
     fetchOptions: { cache: 'no-store' },
   })
