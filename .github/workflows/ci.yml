@@ -42,12 +42,12 @@ jobs:
         run: |
           echo "$GITHUB_CONTEXT"
       - name: Checkout the ${{ github.base_ref }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         if: ${{ github.event_name == 'pull_request' }}
         with:
           ref: ${{ github.base_ref }}
       - name: Checkout the ${{ github.ref }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: ${{ github.ref == 'refs/heads/main' && '0' || '1' }}
       - id: check
