@@ -2,14 +2,15 @@ import { env } from '@botfi/env/db'
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { PrismaClient } from '@prisma/client'
 
-const adapter = new PrismaNeon(
-  {
-    connectionString: env.DB_URL,
-  },
-  {
-    schema: `repo-template-${env.NODE_ENV}`,
-  },
-)
+const isNeonUrl = (() => {
+  try {
+    return new URL(env.DB_URL).hostname.includes('neon.tech')
+  } catch {
+    return false
+  }
+})()
+
+const adapter = isNeonUrl ? new PrismaNeon({ connectionString: env.DB_URL }) : undefined
 
 const _prisma = new PrismaClient({
   adapter,
