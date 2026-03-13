@@ -1,11 +1,11 @@
-# .agent — Shared Agent Skills
+# .agents — Shared Agent Skills
 
 Shared skills and instructions for AI coding agents (Cursor, Copilot, etc.) across all monorepos in this repository.
 
 ## Structure
 
 ```
-.agent/
+.agents/
 └── skills/
     └── <skill-name>/
         └── SKILL.md
@@ -19,24 +19,24 @@ Monorepos consume shared skills via **symlinks** from their `.cursor/skills/` di
 
 ```bash
 # From a monorepo root (e.g. platform/)
-ln -s ../../../.agent/skills/commit .cursor/skills/commit
+ln -s ../../../.agents/skills/commit .cursor/skills/commit
 ```
 
-This makes the skill discoverable by Cursor as if it were local, while keeping a single source of truth in `.agent/skills/`.
+This makes the skill discoverable by Cursor as if it were local, while keeping a single source of truth in `.agents/skills/`.
 
 ### Adding a new shared skill
 
 1. Create the skill directory and file:
 
    ```bash
-   mkdir -p .agent/skills/<skill-name>
-   # Write .agent/skills/<skill-name>/SKILL.md
+   mkdir -p .agents/skills/<skill-name>
+   # Write .agents/skills/<skill-name>/SKILL.md
    ```
 
 2. Symlink it into each monorepo that should use it:
 
    ```bash
-   ln -s ../../../.agent/skills/<skill-name> <monorepo>/.cursor/skills/<skill-name>
+   ln -s ../../../.agents/skills/<skill-name> <monorepo>/.cursor/skills/<skill-name>
    ```
 
 ### Adding a monorepo-specific skill
