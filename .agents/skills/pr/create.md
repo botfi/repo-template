@@ -1,8 +1,3 @@
----
-name: pr-create
-description: Create GitHub pull requests using the gh CLI. Detects the base branch of the current branch, confirms it with the user, and populates the PR body from the repo's .github/pull_request_template.md. Use when the user asks to create a PR, open a pull request, or submit changes for review.
----
-
 # Create Pull Request
 
 ## Workflow
@@ -99,7 +94,7 @@ EOF
 )"
 ```
 
-**Title format**: Follow the repo's commit convention — `type(scope): summary` (e.g., `feat(web): add user profile page`).
+**Title format**: Follow the repo's commit convention -- `type(scope): summary` (e.g., `feat(web): add user profile page`).
 
 ### Step 8: Return the PR URL
 

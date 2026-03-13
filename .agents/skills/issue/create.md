@@ -1,16 +1,9 @@
----
-name: issue-create
-description: >-
-  Conversationally drafts and creates a GitHub issue using repo templates.
-  Use when the user asks to create, file, or open an issue.
----
-
 # Issue Create
 
 ## Goal
 
 Guide the user from a rough idea to a well-structured GitHub issue through
-natural conversation — understand first, structure later.
+natural conversation -- understand first, structure later.
 
 ## Flow
 
@@ -20,23 +13,23 @@ This is a **multi-turn conversational** skill. Do NOT rush to templates.
 
 Ask the user briefly:
 - What do you want to work on, or what's the problem?
-- Keep it open-ended — one or two questions max.
+- Keep it open-ended -- one or two questions max.
 
 ### Phase 2: Discuss and explore (turns 2-3)
 
 Based on the user's answer:
 
-1. **Codebase scan** — search for relevant files, packages, entry points
+1. **Codebase scan** -- search for relevant files, packages, entry points
    related to what the user described. Present findings concisely.
-2. **Ask clarifying questions** — dig into specifics:
+2. **Ask clarifying questions** -- dig into specifics:
    - Scope and impact area
    - Expected behavior vs actual behavior (if a bug)
    - Why it matters / motivation (if a feature)
    - Any known constraints or dependencies
-3. **Share observations** — flag related code, existing TODOs, similar
+3. **Share observations** -- flag related code, existing TODOs, similar
    patterns, or potential risks found during the scan.
 
-Keep the conversation natural. Don't interrogate — collaborate.
+Keep the conversation natural. Don't interrogate -- collaborate.
 
 ### Phase 3: Match to template (after 2-3 turns of discussion)
 
@@ -112,7 +105,7 @@ Print the created issue URL.
 ## Guardrails
 
 - **Never create without explicit user approval.**
-- Do not fetch templates until Phase 3 — understand the problem first.
+- Do not fetch templates until Phase 3 -- understand the problem first.
 - Do not invent content; everything comes from the conversation.
-- Do not skip required template fields — prompt the user if gaps remain.
+- Do not skip required template fields -- prompt the user if gaps remain.
 - Preserve the template's section order in the output.
