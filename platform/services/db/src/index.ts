@@ -1,16 +1,13 @@
 import { env } from '@botfi/env/db'
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { PrismaClient } from '@prisma/client'
+import { parseDbUrl } from './utils/parseDbUrl'
 
-const isNeonUrl = (() => {
-  try {
-    return new URL(env.DB_URL).hostname.includes('neon.tech')
-  } catch {
-    return false
-  }
-})()
+const { isNeonUrl, schema } = parseDbUrl(env.DB_URL)
 
-const adapter = isNeonUrl ? new PrismaNeon({ connectionString: env.DB_URL }) : undefined
+const adapter = isNeonUrl
+  ? new PrismaNeon({ connectionString: env.DB_URL }, schema ? { schema } : undefined)
+  : undefined
 
 const _prisma = new PrismaClient({
   adapter,
