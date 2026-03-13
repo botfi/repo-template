@@ -51,5 +51,5 @@ export const env = createEnv({
     NEXT_PUBLIC_URL_WEB: process.env.NEXT_PUBLIC_URL_WEB,
   },
   skipValidation: false,
-  emptyStringAsUndefined: false,
+  emptyStringAsUndefined: true,
 })

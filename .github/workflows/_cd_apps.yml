@@ -144,29 +144,22 @@ jobs:
         shell: bash
 
       - name: Install app dependencies
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm dedupe
-
-      - name: Generate Prisma runtime
-        run: pnpm db:generate
-        working-directory: platform/services/db
-        if: ${{ needs.utils.outputs.db != '' }}
-      # - name: Manual add Prisma runtime binary
-      #   if: ${{ needs.utils.outputs.db != '' }}
-      #   run: |
-      #     ls -lah services/db/prisma/client/libquery_engine-*
-      #     # rm -f services/db/prisma/client/libquery_engine-debian-*
-      #     ls -lah services/db/prisma/client/libquery_engine-*
-      #     mkdir -p apps/${{ inputs.app }}/prisma
-      #     cp -r services/db/prisma/client apps/${{ inputs.app }}/prisma/
-      #     rm -f apps/${{ inputs.app }}/prisma/client/libquery_engine-debian-*
+        run: pnpm install --frozen-lockfile
 
       - name: Pull Vercel Environment Information
         run: |
           pnpm vercel pull --yes --environment=${VERCEL_ENV} --token=${VERCEL_TOKEN}
           ls -la .vercel
           cat .vercel/project.json
+          cat .vercel/.env.production.local | sed 's/#.*$//' | sed '/^[[:space:]]*$/d' | sed 's/="\(.*\)"$/=\1/' >> $GITHUB_ENV
+
+      - name: Generate Prisma runtime
+        run: |
+          cp ../../.vercel/.env.production.local .env
+          echo $NEXT_PUBLIC_ENV
+          pnpm db:generate
+        working-directory: platform/services/db
+        if: ${{ needs.utils.outputs.db != '' }}
 
       - name: '[${{ inputs.environment }}] Build Project Artifacts'
         if: ${{ env.VERCEL_ENV == 'production' }}
@@ -175,9 +168,7 @@ jobs:
           APOLLO_ELV2_LICENSE: accept
       - name: '[${{ inputs.environment }}] Migrate database'
         if: ${{ env.VERCEL_ENV == 'production' && needs.utils.outputs.db != '' }}
-        run: |
-          cp ../../.vercel/.env.production.local .env
-          pnpm db:deploy
+        run: pnpm db:deploy
         working-directory: platform/services/db
 
       - name: '[${{ inputs.environment }}] Deploy Project Artifacts to Vercel'

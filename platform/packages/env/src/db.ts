@@ -9,6 +9,10 @@ export const env = createEnv({
     DB_DIRECT_URL: z.string().url().optional().describe('The direct connection URL for the database (bypasses connection pooler)'),
   },
   runtimeEnv: {
+    NODE_ENV: process.env.NODE_ENV,
+
+    NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
+
     DB_URL: process.env.DB_URL,
     DB_DIRECT_URL: process.env.DB_DIRECT_URL,
   },
