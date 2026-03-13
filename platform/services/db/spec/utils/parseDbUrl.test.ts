@@ -23,6 +23,15 @@ describe('parseDbUrl', () => {
     })
   })
 
+  it('returns schema when present', () => {
+    const parsed = parseDbUrl('postgresql://root:secret@localhost:5432/postgres?schema=repo-template-test')
+
+    expect(parsed).toEqual({
+      isNeonUrl: false,
+      schema: 'repo-template-test',
+    })
+  })
+
   it('always returns defaults for invalid URL', () => {
     const parsed = parseDbUrl('not-a-valid-url')
 
