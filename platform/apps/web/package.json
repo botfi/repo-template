@@ -15,7 +15,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "format:write": "prettier --write \"**/*.{ts,tsx,md}\"",
     "i18n:parse": "i18next --config config/i18next-parser.ts",
-    "lint": "next lint && pnpm typecheck && pnpm format:check",
+    "lint": "pnpm typecheck && pnpm format:check",
     "prebuild": "echo 'Use normal graphql instead of supergraph' || pnpm supergraph:compose",
     "predev": "echo 'Use normal graphql instead of supergraph' || pnpm supergraph:compose",
     "start": "next start -p ${DEV_WEB_PORT:-15000}",
